@@ -1,13 +1,22 @@
 import os
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
+
 @app.route('/')
-def hello():
-    return '<h1>Hello World!</h1> <p>This is a work in progress.  More to come soon!</p>'
+def index():
+    data = (
+        ('site name', 'http://google.com', 'author', 'desc', 'sourcelink'),
+        ('another', 'http://example.com', 'authorette', 'ription', None),
+        ('we', 'need', 'even', 'more', '!'),
+        ('we', 'need', 'even', 'more', '!'),
+        ('we', 'need', 'even', 'more', '!'),
+        ('we', 'need', 'even', 'more', '!'),
+    )
+    return render_template('index.html', data=data)
 
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=True)
