@@ -16,6 +16,14 @@ def index():
     )
     return render_template('index.html', data=data)
 
+@app.route('/edit/')
+def edit():
+    return render_template('edit-remove.html', action='edit')
+
+@app.route('/remove/')
+def remove():
+    return render_template('edit-remove.html', action='remove')
+
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
     port = int(os.environ.get('PORT', 5000))

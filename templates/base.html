@@ -1,0 +1,117 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta charset="utf-8">
+<meta name="description" content="">
+<meta name="author" content="Roberto Alsina">
+<title>Some Sites Using Nikola | Nikola</title>
+
+<link href="http://getnikola.com/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="http://getnikola.com/assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
+<link href="http://getnikola.com/assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="http://getnikola.com/assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="http://getnikola.com/assets/css/colorbox.css" rel="stylesheet" type="text/css">
+<link href="http://getnikola.com/assets/css/theme.css" rel="stylesheet" type="text/css">
+<link href="http://getnikola.com/assets/css/custom.css"
+rel="stylesheet" type="text/css">
+<style type="text/css">
+.pages-line .span4 {
+    margin-bottom: 2.564102564102564%;
+}
+</style>
+<!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+
+
+
+
+
+
+</head>
+<body>
+<!-- Menubar -->
+<div class="navbar navbar-fixed-top" id="navbar">
+    <div class="navbar-inner">
+        <div class="container">
+
+            <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" href=".">
+                Nikola
+            </a>
+            <!-- Everything you want hidden at 940px or less, place within here -->
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+
+                    <li><a href="documentation.html">Documentation</a>
+                    </li><li><a href="http://themes.getnikola.com">Themes</a>
+                    </li><li><a href="blog/index.html">Blog</a>
+                    </li><li><a href="http://groups.google.com/group/nikola-discuss">Forum</a>
+                    </li><li><a href="https://github.com/getnikola/nikola">Source Code</a>
+                    </li><li><a href="changes.html">Changelog</a>
+                    </li><li><a href="https://github.com/getnikola/nikola/issues">Report a Bug</a>
+
+                </li></ul>
+
+                <ul class="nav pull-right">
+
+
+                    <li>
+                    <a href="./index.txt" id="sourcelink">Source</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Menubar -->
+<div class="container-fluid" id="container-fluid">
+    <!--Body content-->
+    <div class="row-fluid">
+        <div class="span2"></div>
+        <div class="span8">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+    <div class="footerbox">
+        Contents © 2012-2013 <a href="mailto:info@getnikola.com">Roberto Alsina</a>  |  <a href="http://getnikola.com">Powered by Nikola</a>  |  
+        <a href="https://twitter.com/intent/follow?original_referer=http%3A%2F%2Fplatform.twitter.com%2Fwidgets%2Ffollow_button.1333526973.html&amp;region=follow_link&amp;screen_name=nikolagenerator&amp;source=followbutton&amp;variant=2.0">Follow Nikola on twitter</a>  |  Theme is <a href="http://bootswatch.com/cerulean/">Cerulean</a>
+
+    </div>
+
+    <script src="http://getnikola.com/assets/js/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="http://getnikola.com/assets/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="http://getnikola.com/assets/js/jquery.colorbox-min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">jQuery("a.image-reference").colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});
+$(window).on('hashchange', function(){
+        if (location.hash && $(location.hash)[0]) {
+        $('body').animate({scrollTop: $(location.hash).offset().top - $('#navbar').outerHeight(true)*1.2 }, 1);
+        }
+        });
+$(document).ready(function(){$(window).trigger('hashchange')});
+    </script>
+
+
+    <!-- Start of StatCounter Code for Default Guide -->
+    <script type="text/javascript">
+var sc_project=7842875; 
+var sc_invisible=1; 
+var sc_security="3421486a"; 
+    </script>
+    <script type="text/javascript" src="http://www.statcounter.com/counter/counter.js"></script>
+    <noscript><div class="statcounter"><a title="tumblr
+                statistics" href="http://statcounter.com/tumblr/" target="_blank"><img class="statcounter" src="http://c.statcounter.com/7842875/0/3421486a/1/" alt="tumblr statistics"></a></div></noscript>
+    <!-- End of StatCounter Code for Default Guide -->
+
+    </body>
+    </html>
