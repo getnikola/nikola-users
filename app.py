@@ -17,7 +17,7 @@ def index():
     return render_template('index.html', data=data)
 
 @app.route('/add/', methods=['GET', 'POST'])
-def edit():
+def add():
     if request.method == 'POST':
         # Temporary.
         return render_template('add.html')
