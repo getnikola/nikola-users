@@ -1,1 +1,1 @@
-web: python nikola-users-web.py
+web: python nikola-users.py

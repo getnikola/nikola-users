@@ -20,7 +20,7 @@ def index():
 def add():
     if request.method == 'POST':
         # Temporary.
-        return render_template('add.html')
+        return render_template('error.html')
     else:
         return render_template('add.html')
 
