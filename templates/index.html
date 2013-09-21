@@ -42,35 +42,38 @@
     </div>
 </div>
 
-<ul class="pages-line unstyled">
-    {% for item in data %}
-    <li class="span4">
-    <div class="thumbnail">
-        <div class="caption">
-            <h3><a href="{{ item[1] }}">{{ item[0] }}</a><br>
-                <small>by {{ item[2] }}</small></h3>
+{% if not data %}
+    <p class="text-error">No pages found…</p>
+{% else %}
+    <ul class="pages-line unstyled">
+        {% for item in data %}
+        <li class="span4">
+        <div class="thumbnail">
+            <div class="caption">
+                <h3><a href="{{ item.url }}">{{ item.title }}</a><br>
+                    <small>by {{ item.author }}</small></h3>
+            </div>
+
+            <p>
+            {{ item.description }}
+            </p>
+
+            <p style="text-align: center;">
+            <a href="{{ item.url }}" class="btn btn-large btn-primary">Visit</a>
+            {% if item.sourcelink != None %}
+            <a href="{{ item.sourcelink }}" class="btn">Source</a>
+            {% else %}
+            <a href="#" class="btn disabled">Source</a>
+            {% endif %}
+            </p>
         </div>
-
-        <p>
-        {{ item[3] }}
-        </p>
-
-        <p style="text-align: center;">
-        <a href="{{ item[1] }}" class="btn btn-large btn-primary">Visit</a>
-        {% if item[4] != None %}
-        <a href="{{ item[4] }}" class="btn">Source</a>
-        {% else %}
-        <a href="#" class="btn disabled">Source</a>
+        </li>
+        {% if loop.index % 3 == 0 %}
+    </ul><ul class="pages-line unstyled">
         {% endif %}
-        </p>
-    </div>
-    </li>
-    {% if loop.index % 3 == 0 %}
-</ul><ul class="pages-line unstyled">
-    {% endif %}
-    {% endfor %}
-</ul>
-
+        {% endfor %}
+    </ul>
+{% endif %}
 {% endblock %}
 {% block js %}
 <script>

@@ -3,6 +3,7 @@
 import os
 import hashlib
 import urlparse
+import datetime
 from flask import Flask, render_template, request, flash, session, redirect
 from flask.ext.sqlalchemy import SQLAlchemy
 
@@ -28,16 +29,21 @@ class Page(db.Model):
     date = db.Column(db.DateTime)
     visible = db.Column(db.Boolean)
     email = db.Column(db.String(512))
+    publishemail = db.Column(db.Boolean)
 
-    def __init__(self, title, url, author, description, sourcelink, date, visible, email):
+    def __init__(self, title, url, author, description, email, publishemail, sourcelink = None, date = None, visible = False):
         self.title = title
         self.url = url
         self.author = author
         self.description = description
         self.sourcelink = sourcelink
-        self.date = date
+        if date is None:
+            self.date = datetime.datetime.now()
+        else:
+            self.date = date
         self.visible = visible
         self.email = email
+        self.publishemail = publishemail
 
     def __repr__(self):
         return '<Page %r>' % self.title
@@ -54,7 +60,7 @@ class Admin(db.Model):
         self.password = Admin.mkpwd(password)
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<Admin %r>' % self.username
 
     @staticmethod
     def mkpwd(password):
@@ -62,21 +68,22 @@ class Admin(db.Model):
 
 @app.route('/')
 def index():
-    data = (
-        ('site name', 'http://google.com', 'author', 'desc', 'sourcelink'),
-        ('another', 'http://example.com', 'authorette', 'ription', None),
-        ('we', 'need', 'even', 'more', '!'),
-        ('we', 'need', 'even', 'more', '!'),
-        ('we', 'need', 'even', 'more', '!'),
-        ('we', 'need', 'even', 'more', '!'),
-    )
+    data = Page.query.filter_by(visible=True)
     return render_template('index.html', data=data)
 
 @app.route('/add/', methods=['GET', 'POST'])
 def add():
     if request.method == 'POST':
-        # Temporary.
-        return render_template('error.html')
+        f = request.form
+        if 'tos' not in f:
+            return render_template('add-error.html', error='tos')
+        try:
+            p = Page(f['title'], f['url'], f['author'], f['description'], f['email'], 'publishemail' in f, sourcelink = f['sourcelink'])
+            db.session.add(p)
+            db.session.commit()
+        except:
+            return render_template('add-error.html', error='general')
+        return render_template('add-ack.html', p=p)
     else:
         return render_template('add.html')
 
@@ -118,7 +125,8 @@ def admin_logout():
 
 @app.route('/acp/')
 def admin_panel():
-    return render_template('acp.html')
+    data = Page.query.all()
+    return render_template('acp.html', data=data)
 
 @app.route('/login/passwd/change/', methods=['GET', 'POST'])
 def admin_change_passwd():

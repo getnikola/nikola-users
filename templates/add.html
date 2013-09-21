@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% set title = 'Add' %}
 {% block content %}
-This form does not work yet.
+This form does not work yet.  Make no attempt to solve it.
 
 <form class="form-horizontal" method="POST" action="/add/">
     <div class="control-group">
         <label class="control-label" for="inputTitle">Title</label>
         <div class="controls">
-            <input type="text" id="inputTitle" placeholder="Site Name"
+            <input type="text" name="title" id="inputTitle" placeholder="Site Name"
             required>
             <span class="help-inline">Should be the same as <tt>BLOG_TITLE</tt>.</span>
         </div>
@@ -15,7 +15,7 @@ This form does not work yet.
     <div class="control-group">
         <label class="control-label" for="inputAuthor">Author</label>
         <div class="controls">
-            <input type="text" id="inputAuthor" placeholder="Author" required>
+            <input type="text" name="author" id="inputAuthor" placeholder="Author" required>
             <span class="help-inline">Pseudonym, real name, what floats your
                 boat.</span>
         </div>
@@ -23,30 +23,31 @@ This form does not work yet.
     <div class="control-group">
         <label class="control-label" for="inputEmail">Email</label>
         <div class="controls">
-            <input type="email" id="inputEmail" placeholder="Email" required>
+            <input type="email" name="email" id="inputEmail" placeholder="Email" required>
             <span class="help-inline">Will not be published if you do not want to.</span>
         </div>
     </div>
     <div class="control-group">
         <label class="control-label" for="inputURL">URL</label>
         <div class="controls">
-            <input type="url" id="inputURL" placeholder="URL" required>
+            <input type="url" name="url" id="inputURL" placeholder="URL" required>
             <span class="help-inline">Should be the same as <tt>SITE_URL</tt>.</span>
         </div>
     </div>
     <div class="control-group">
         <label class="control-label" for="inputDescription">Description</label>
         <div class="controls">
-            <textarea id="inputDescription" placeholder="Description"
+            <textarea name="description" id="inputDescription" placeholder="Description"
                 maxlength="250" required rows="5"></textarea>
             <span class="help-inline">Up to 250 characters.  (we’re quite
                 generous!)</span>
         </div>
     </div>
     <div class="control-group">
-        <label class="control-label" for="inputSource">Source</label>
+        <label class="control-label" for="inputSource">Site source</label>
         <div class="controls">
-            <input type="url" id="inputSource" placeholder="Source">
+            <input type="url" name="sourcelink" id="inputSource"
+            placeholder="Site source">
             <span class="help-inline">Link to your site source on GitHub (if any)</span>
         </div>
     </div>
@@ -58,8 +59,8 @@ This form does not work yet.
                     Service and Privacy Policy</a>.
             </label>
             <label class="checkbox">
-                <input name="email-publish" type="checkbox"> I want my email
-                address public.
+                <input name="publishemail" type="checkbox"> I want my e-mail
+                visible publicly.
             </label>
             <button type="submit" class="btn">Request addition</button>
         </div>

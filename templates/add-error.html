@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% set title = "Error" %}
+{% block content %}
+<p class="text-error lead">Something went wrong.</p>
+{% if error == 'tos' %}
+<p class="text-error">You did not accept the Terms of Service.</p>
+{% elif error == 'general' %}
+<p class="text-error">Possible causes include:</p>
+
+<ul>
+    <li><p class="text-error">this page already exists in our database</p></li>
+    <li><p class="text-error">some of your input is invalid/too long</p></li>
+</ul>
+{% endif %}
+
+<p class="text-error">Press the Back button and fix those problems.</p>
+{% endblock %}

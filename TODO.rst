@@ -12,6 +12,6 @@ Done
 To do
 -----
 
-* actual app logic
-* admin control panel
+* actual app logic [90%]
+* admin control panel [50%]
 * e-mail

@@ -1,5 +1,35 @@
 {% extends "base.html" %}
-{% set title = "Error" %}
+{% set title = "Manage" %}
 {% block content %}
-<p class="text-error">Not available.</p>
+{% if not data %}
+<p class="text-error">No pages exist.</p>
+{% else %}
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Email</th>
+            <th>URL</th>
+            <th>Source</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for p in data %}
+        <tr class="{% if p.visible %}success{% else %}error{% endif %}">
+            <td>{{ p.id }}</td>
+            <td>{{ p.title }}</td>
+            <td>{{ p.author }}</td>
+            <td>{{ p.email }}</td>
+            <td>{{ p.url }}</td>
+            <td>{{ p.sourcelink }}</td>
+            <td>???</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}
 {% endblock %}
