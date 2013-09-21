@@ -9,9 +9,10 @@ Done
 * add form
 * authentication
 * admin control panel
+* actual app logic
 
 To do
 -----
 
-* actual app logic [90%]
+* migration
 * e-mail

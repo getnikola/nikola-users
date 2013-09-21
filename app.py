@@ -183,6 +183,37 @@ def admin_change_passwd():
     else:
         return render_template('changepasswd.html')
 
+@app.route('/users/')
+def admin_users():
+    data = Admin.query.all()
+    return render_template('acp/users.html', data=data)
+
+@app.route('/users/<id>/', methods=['POST'])
+def admin_user_edit(id):
+    f = request.form
+    if id == 'create':
+        a = Admin(f['username'], f['email'], f['password'])
+        db.session.add(a)
+        db.session.commit()
+    else:
+        a = Admin.query.filter_by(id=int(id)).first()
+        if 'del' in f:
+            if f['del'] == '1':
+                db.session.delete(a)
+                db.session.commit()
+        elif 'delete' in f:
+            return render_template('acp/userdel.html', user=a)
+        else:
+            a.username = f['username']
+            a.email = f['email']
+            if f['password']:
+                a.password = Admin.mkpwd(f['password'])
+
+            db.session.add(a)
+            db.session.commit()
+
+    return redirect('/users/', 302)
+
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
     port = int(os.environ.get('PORT', 5000))

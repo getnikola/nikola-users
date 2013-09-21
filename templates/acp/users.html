@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% set title = "Users" %}
+{% block content %}
+{% if not data %}
+<p class="text-error">No users exist.</p>
+{% else %}
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for p in data %}
+    <tr>
+        <form style="margin: 0;" method="POST" action="/users/{{ p.id }}/">
+            <td>{{ p.id }}</td>
+            <td><input name="username" type="text" value="{{ p.username }}"
+                required></td>
+            <td><input name="email" type="email" value="{{ p.email }}" required></td>
+            <td>
+                <input name="password" type="password" placeholder="(leave as is)">
+                <td style="width: 3em;">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-inverse"><i
+                                class="icon-ok icon-white"></i></button>
+                        <button type="submit" name="delete" class="btn btn-danger">
+                            <i class="icon-trash icon-white"></i>
+                        </div>
+                    </button>
+                </td>
+            </form>
+        </tr>
+        {% endfor %}
+        <form style="margin: 0;" method="POST" action="/users/create/">
+            <tr class="success">
+                <td>New:</td>
+                <td><input name="username" type="text" required></td>
+                <td><input name="email" type="email" required></td>
+                <td><input name="password" type="password" required></td>
+                <td><button type="submit" name="add" class="btn btn-success"><i
+                            class="icon-plus icon-white"></i></button></td>
+            </tr>
+            </tbody>
+        </table>
+        {% endif %}
+        {% endblock %}
