@@ -68,7 +68,7 @@ class Admin(db.Model):
 
 @app.route('/')
 def index():
-    data = Page.query.filter_by(visible=True).order_by(Page.date)
+    data = list(Page.query.filter_by(visible=True).order_by(Page.date))
     return render_template('index.html', data=data)
 
 @app.route('/add/', methods=['GET', 'POST'])
@@ -125,7 +125,7 @@ def admin_logout():
 
 @app.route('/acp/')
 def admin_panel():
-    data = Page.query.order_by(Page.visible == True, Page.date)
+    data = list(Page.query.order_by(Page.visible == True, Page.date))
     return render_template('acp/index.html', data=data)
 
 @app.route('/acp/<slug>/', methods=['POST'])

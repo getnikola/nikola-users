@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="description" content="">
 <meta name="author" content="Roberto Alsina">
-<title>{{ title }} | Some Sites Using Nikola | Nikola</title>
+<title>{{ title }} | Some Sites Using Nikola</title>
 
 <link href="http://getnikola.com/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="http://getnikola.com/assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
@@ -83,8 +83,8 @@ rel="stylesheet" type="text/css">
     <div class="row-fluid">
         <div class="span2"></div>
         <div class="span8">
-            <h1>Some Sites Using Nikola</h1>
-            <h2 style="text-align: center;">{{ title }}</h2>
+            <h1>{{ title }}</h1>
+            {% block subtitle %}{% endblock %}
             {% for category, message in get_flashed_messages(with_categories=true) %}
             <div class="alert alert-dismissable
                 alert-{% if category == 'error' %}danger{% else %}info{%endif%}">
