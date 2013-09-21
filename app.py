@@ -18,7 +18,7 @@ app.config['SECRET_KEY'] = os.environ["SECRET_KEY"]
 db = SQLAlchemy(app)
 
 class Page(db.Model):
-    id = db.Column(db.Integer, db.Sequence('nupages_id_seq'), primary_key=True,
+    id = db.Column(db.Integer, db.Sequence('page_id_seq'), primary_key=True,
                    unique=True)
     title = db.Column(db.String(80))
     url = db.Column(db.String(512), unique=True)
@@ -43,7 +43,7 @@ class Page(db.Model):
         return '<Page %r>' % self.title
 
 class Admin(db.Model):
-    id = db.Column(db.Integer, db.Sequence('nuadmins_id_seq'), primary_key=True, unique=True)
+    id = db.Column(db.Integer, db.Sequence('admin_id_seq'), primary_key=True, unique=True)
     username = db.Column(db.String(80), unique=True)
     email = db.Column(db.String(512), unique=True)
     password = db.Column(db.String(128))
