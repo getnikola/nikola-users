@@ -33,10 +33,6 @@ def remove():
     return render_template('edit-remove.html', action='remove')
 
 
-@app.route('/tos/')
-def tos():
-    return render_template('tos.html')
-
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
     port = int(os.environ.get('PORT', 5000))
