@@ -68,7 +68,7 @@ class Admin(db.Model):
 
 @app.route('/')
 def index():
-    data = Page.query.filter_by(visible=True)
+    data = Page.query.filter_by(visible=True).order_by(Page.date)
     return render_template('index.html', data=data)
 
 @app.route('/add/', methods=['GET', 'POST'])
@@ -125,8 +125,40 @@ def admin_logout():
 
 @app.route('/acp/')
 def admin_panel():
-    data = Page.query.all()
-    return render_template('acp.html', data=data)
+    data = Page.query.order_by(Page.visible == True, Page.date)
+    return render_template('acp/index.html', data=data)
+
+@app.route('/acp/<slug>/', methods=['POST'])
+def admin_act(slug):
+    page = Page.query.filter_by(id=int(slug)).first()
+    if 'toggle' in request.form:
+        page.visible = not page.visible
+        db.session.add(page)
+        db.session.commit()
+        return redirect('/acp/', 302)
+    elif 'edit' in request.form:
+        if request.form['edit'] == '1':
+            f = request.form
+            page.title = f['title']
+            page.url = f['url']
+            page.author = f['author']
+            page.description = f['description']
+            page.email = f['email']
+            page.sourcelink = f['sourcelink']
+            page.publishemail = 'publishemail' in f
+            page.visible = 'visible' in f
+            db.session.add(page)
+            db.session.commit()
+            return redirect('/acp/', 302)
+        else:
+            return render_template('acp/edit.html', page=page)
+    elif 'delete' in request.form:
+        return render_template('acp/delete.html', page=page)
+    elif 'del' in request.form:
+        if request.form['del'] == '1':
+            db.session.delete(page)
+            db.session.commit()
+        return redirect('/acp/', 302)
 
 @app.route('/login/passwd/change/', methods=['GET', 'POST'])
 def admin_change_passwd():

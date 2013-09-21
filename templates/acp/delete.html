@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% set title = "Delete" %}
+{% block content %}
+
+<p>
+This will remove this page altogether: <strong>{{ page.title }}</strong>
+</p>
+
+<p class="lead">Are you sure you want to perform this action?
+
+<form action="" method="POST" style="text-align: center;">
+    <button type="submit" name="del" value="1" style="width: 5em;" class="btn
+        btn-large
+        btn-danger">Yes</button>
+    <button type="submit" name="del" value="0" style="width: 5em;" class="btn
+        btn-large
+        btn-default">No</button>
+</form></p>
+{% endblock content %}

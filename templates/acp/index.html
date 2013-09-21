@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% set title = "Manage" %}
+{% block content %}
+{% if not data %}
+<p class="text-error">No pages exist.</p>
+{% else %}
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Email</th>
+            <th>URL</th>
+            <th>Source</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for p in data %}
+        <tr class="{% if p.visible %}success{% else %}error{% endif %}">
+            <td>{{ p.id }}</td>
+            <td>{{ p.title }}</td>
+            <td>{{ p.author }}</td>
+            <td><a href="mailto:{{ p.email }}">{{ p.email }}</a></td>
+            <td><a href="{{ p.url }}">{{ p.url }}</a></td>
+            <td>{{ p.sourcelink }}</td>
+            <td>
+                <form style="margin: 0;" method="POST" action="/acp/{{ p.id }}/">
+                    <button type="submit" name="toggle" class="btn
+                        {% if p.visible %}btn-danger{% else %}btn-success{% endif %}">
+                        <i class="icon-eye-{% if p.visible %}close{% else %}open{% endif %}
+                        icon-white"></i>
+                    </button>
+                    <button type="submit" name="edit" class="btn btn-info">
+                        <i class="icon-edit icon-white"></i>
+                    </button>
+                    <button type="submit" name="delete" class="btn btn-danger">
+                        <i class="icon-trash icon-white"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}
