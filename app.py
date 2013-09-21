@@ -105,11 +105,43 @@ def admin_login():
             flash('Goodbye.')
         return redirect('/', 302)
     else:
-        return render_template('login.html')
+        if 'username' in session:
+            return redirect('/', 302)
+        else:
+            return render_template('login.html')
+
+@app.route('/login/out/')
+def admin_logout():
+    session.pop('username')
+    flash('Goodbye.')
+    return redirect('/', 302)
 
 @app.route('/acp/')
 def admin_panel():
-    return render_template('error.html')
+    return render_template('acp.html')
+
+@app.route('/login/passwd/change/', methods=['GET', 'POST'])
+def admin_change_passwd():
+    if not session['username']:
+        return render_template('accessdenied.html')
+
+    if request.method == 'POST':
+        if request.form['password'] == request.form['confirm']:
+            u = Admin.query.filter(Admin.username.ilike(
+                session['username'])).first()
+
+            u.password = Admin.mkpwd(request.form['password'])
+            db.session.add(u)
+            db.session.commit()
+            session.pop('username')
+            flash('Your password has been changed.  For safety reasons, you need to log back in.')
+            return redirect('/login/', 302)
+        else:
+            flash('The passwords do not match.', category='error')
+            return render_template('changepasswd.html')
+
+    else:
+        return render_template('changepasswd.html')
 
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
