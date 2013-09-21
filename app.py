@@ -93,6 +93,7 @@ def admin_login():
             if u is None or (hashlib.sha512(request.form['password'].encode()).hexdigest() !=
                 u.password):
                 flash('Login failed.', category='error')
+                return render_template('login.html')
             else:
                 session['username'] = u.username
                 flash('Logged in!')
