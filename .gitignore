@@ -33,3 +33,6 @@ nosetests.xml
 
 # Backup versions of files [Kw’s scheme]
 o.*
+
+# local configuration
+local-config
