@@ -51,10 +51,14 @@ class Admin(db.Model):
     def __init__(self, username, email, password):
         self.username = username
         self.email = email
-        self.password = hashlib.sha512(password.encode()).hexdigest()
+        self.password = Admin.mkpwd(password)
 
     def __repr__(self):
         return '<User %r>' % self.username
+
+    @staticmethod
+    def mkpwd(password):
+        return hashlib.sha512(password.encode()).hexdigest()
 
 @app.route('/')
 def index():
@@ -90,8 +94,7 @@ def admin_login():
         if request.form['act'] == 'in':
             u = Admin.query.filter(Admin.username.ilike(
                 request.form['username'])).first()
-            if u is None or (hashlib.sha512(request.form['password'].encode()).hexdigest() !=
-                u.password):
+            if not u or Admin.mkpwd(request.form['password']) != u.password:
                 flash('Login failed.', category='error')
                 return render_template('login.html')
             else:
@@ -103,7 +106,6 @@ def admin_login():
         return redirect('/', 302)
     else:
         return render_template('login.html')
-
 
 @app.route('/acp/')
 def admin_panel():
