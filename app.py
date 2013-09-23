@@ -72,8 +72,8 @@ def index():
     data = Page.query.filter_by(visible=True)
     # The first row is ralsina, no matter what
     row1 = list(data.filter_by(author='Roberto '
-                               'Alsina').order_by(app.Page.date))
-    allelse = list(data.filter(app.Page.author.isnot('Roberto Alsina')))
+                               'Alsina').order_by(Page.date))
+    allelse = list(data.filter(Page.author.isnot('Roberto Alsina')))
 
     data = row1 + random.shuffle(allelse)
 
