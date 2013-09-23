@@ -74,8 +74,9 @@ def index():
     row1 = list(data.filter_by(author='Roberto '
                                'Alsina').order_by(Page.date))
     allelse = list(data.filter(Page.author != 'Roberto Alsina'))
+    random.shuffle(allelse)
 
-    data = row1 + random.shuffle(allelse)
+    data = row1 + allelse
 
     return render_template('index.html', data=data)
 
