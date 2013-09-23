@@ -51,7 +51,9 @@
         <div class="thumbnail">
             <div class="caption">
                 <h3><a href="{{ item.url }}">{{ item.title }}</a><br>
-                    <small>by {{ item.author }}</small></h3>
+                    <small>by {% if item.publishemail %}<a href="mailto:{{
+                            item.email }}">{% endif %}{{ item.author }}{% if
+                            item.publishemail %}</a>{% endif %}</small></h3>
             </div>
 
             <p>

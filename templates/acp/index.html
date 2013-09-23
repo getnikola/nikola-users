@@ -24,7 +24,7 @@
             <td>{{ p.title }}</td>
             <td>{{ p.author }}</td>
             <td><i class="{% if p.publishemail %}icon-eye-open{% else
-                    %}icon-eye-close{% endif %}"></i><a href="mailto:{{ p.email }}">{{ p.email }}</a></td>
+                    %}icon-eye-close{% endif %}"></i> <a href="mailto:{{ p.email }}">{{ p.email }}</a></td>
             <td><a href="{{ p.url }}">{{ p.url }}</a></td>
             <td><i class="{% if p.sourcelink %}icon-ok{% else
                     %}icon-remove{% endif %}"></i></td>
