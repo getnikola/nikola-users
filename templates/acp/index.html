@@ -23,9 +23,10 @@
             <td>{{ p.id }}</td>
             <td>{{ p.title }}</td>
             <td>{{ p.author }}</td>
-            <td><a href="mailto:{{ p.email }}">{{ p.email }}</a></td>
+            <td><i class="{% if p.publishemail %}icon-eye-open{% else
+                    %}icon-eye-close{% endif %}"></i><a href="mailto:{{ p.email }}">{{ p.email }}</a></td>
             <td><a href="{{ p.url }}">{{ p.url }}</a></td>
-            <td><i class="{% if p.sourcelink %}icon-check{% else
+            <td><i class="{% if p.sourcelink %}icon-ok{% else
                     %}icon-remove{% endif %}"></i></td>
             <td>
                 <form style="margin: 0;" method="POST" action="/acp/{{ p.id }}/">
