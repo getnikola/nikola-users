@@ -4,6 +4,7 @@ import os
 import hashlib
 import urlparse
 import datetime
+import random
 from flask import Flask, render_template, request, flash, session, redirect
 from flask.ext.sqlalchemy import SQLAlchemy
 
@@ -68,7 +69,14 @@ class Admin(db.Model):
 
 @app.route('/')
 def index():
-    data = list(Page.query.filter_by(visible=True).order_by(Page.date))
+    data = Page.query.filter_by(visible=True)
+    # The first row is ralsina, no matter what
+    row1 = list(data.filter_by(author='Roberto '
+                               'Alsina').order_by(app.Page.date))
+    allelse = list(data.filter(app.Page.author.isnot('Roberto Alsina')))
+
+    data = row1 + random.shuffle(allelse)
+
     return render_template('index.html', data=data)
 
 @app.route('/add/', methods=['GET', 'POST'])
