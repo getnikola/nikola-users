@@ -25,7 +25,8 @@
             <td>{{ p.author }}</td>
             <td><a href="mailto:{{ p.email }}">{{ p.email }}</a></td>
             <td><a href="{{ p.url }}">{{ p.url }}</a></td>
-            <td>{{ p.sourcelink }}</td>
+            <td><i class="{% if p.sourcelink %}icon-check{% else
+                    %}icon-remove{% endif %}"></i></td>
             <td>
                 <form style="margin: 0;" method="POST" action="/acp/{{ p.id }}/">
                     <div class="btn-group">
