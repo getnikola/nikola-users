@@ -57,13 +57,13 @@
     <div class="control-group">
         <div class="controls">
             <label class="checkbox">
+                <input name="visible" type="checkbox" {% if page.visible
+                %}checked{% endif %}> Show this page.
+            </label>
+            <label class="checkbox">
                 <input name="tos" type="checkbox" required checked disabled> I agree to the <a
                     href="/tos/">Terms of
                     Service and Privacy Policy</a>.
-            </label>
-            <label class="checkbox">
-                <input name="visible" type="checkbox" {% if page.visible
-                %}checked{% endif %}> Show this page
             </label>
             <label class="checkbox">
                 <input name="publishemail" type="checkbox" {% if page.publishemail %}checked{% endif %}> I want my e-mail

@@ -52,6 +52,12 @@
     </div>
     <div class="control-group">
         <div class="controls">
+            {% if session.username %}
+            <label class="checkbox">
+                <input name="visible" type="checkbox"> Show this page.
+                [admin only]
+            </label>
+            {% endif %}
             <label class="checkbox">
                 <input name="tos" type="checkbox" required> I agree to the <a
                     href="/tos/">Terms of

@@ -87,7 +87,13 @@ def add():
         if 'tos' not in f:
             return render_template('add-error.html', error='tos')
         try:
-            p = Page(f['title'], f['url'], f['author'], f['description'], f['email'], 'publishemail' in f, sourcelink = f['sourcelink'])
+            if 'visible' in f and 'username' in session:
+                visible = True
+            else:
+                visible = False
+            p = Page(f['title'], f['url'], f['author'], f['description'],
+                     f['email'], 'publishemail' in f, sourcelink =
+                     f['sourcelink'], visible = visible)
             db.session.add(p)
             db.session.commit()
         except:
