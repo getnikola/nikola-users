@@ -122,7 +122,7 @@ class Language(db.Model):
             return None
 
     @staticmethod
-    def sort_by_names(ids):
+    def sort_by_name(ids):
         langs = [Language.find_name(i) for i in ids]
         return sorted(langs)
 
