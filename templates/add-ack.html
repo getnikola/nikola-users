@@ -1,8 +1,19 @@
 {% extends "base.html" %}
 {% set title = "Add" %}
 {% block content %}
-<p class="text-success">Request sent!  It may take a while before it
+<p class="text-success lead">Request sent!  It may take a while before it
 appears on the site, though.</p>
+{% if session['username'] %}
+<p>You are already an administrator.  Nobody was notified of the request.</p>
+{% else %}
+<p>Administrators were informed of your request.  It may take a few hours to
+get your site added, depending on circumstances like timezones and such.
+</p>
+
+<p>The administrators reserve the right to alter your input, or disapprove your
+request.</p>
+{% endif %}
+<p>Here are the data you sent:</p>
 <dl class="dl-horizontal">
     <dt>Title</dt>
     <dd>{{ p.title }}</dd>

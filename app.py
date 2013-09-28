@@ -5,7 +5,8 @@ import hashlib
 import urlparse
 import datetime
 import random
-from flask import Flask, render_template, request, flash, session, redirect
+import mandrill
+from flask import Flask, render_template, request, flash, session, url_for, redirect
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import ARRAY
 
@@ -20,6 +21,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = ''.join((
     '@', dburl.hostname, ':', str(dburl.port),
     '/', dburl.path[1:]))
 app.config['SECRET_KEY'] = os.environ["SECRET_KEY"]
+try:
+    MANDRILL = mandrill.Mandrill(os.environ['MANDRILL_APIKEY'])
+except KeyError:
+    print('Mandrill unavailable')
 db = SQLAlchemy(app)
 
 class Page(db.Model):
@@ -148,6 +153,7 @@ def add():
             db.session.commit()
         except:
             return render_template('add-error.html', error='general')
+        mail_admin(p)
         return render_template('add-ack.html', p=p)
     else:
         return render_template('add-edit.html', data=None, langs=Language.slist())
@@ -280,6 +286,34 @@ def admin_user_edit(id):
             db.session.commit()
 
     return redirect('/users/', 302)
+
+
+
+def mail_admin(page):
+    if not session['username']:
+        return
+
+    msg = """Hello there,
+a request was sent to add a page to the Some Sites Using Nikola listing.
+
+Title: {title}
+URL: {url}
+Author: {author} <{email}>
+
+You can accept or deny this request at the Management page:
+    <{mgmt}>
+
+{sig}
+Some Sites Using Nikola at {ssun}
+""".format(title=page.title, url=page.url, author=page.author,
+           email=page.email, mgmt=url_for('admin_panel', _external=True),
+           sig='-- ', ssun=url_for('index', _external=True))
+
+    message = {'text': msg, 'from_email': 'users@getnikola.com', 'from_name':
+               'Some Sites Using Nikola ({0})'.format(page.author), 'to':
+               'kwpolska@gmail.com', 'auto_html': True}
+    sendtime = datetime.datetime.utcnow().isoformat()
+    return MANDRILL.messages.send(message=message, async=False, ip_pool='Main Pool', send_at=sendtime)
 
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
