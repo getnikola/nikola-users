@@ -140,7 +140,7 @@ def index():
     for i in data:
         i.languages = Language.sort_by_name(i.languages)
 
-    return render_template('index.html', data=data, find_id=Language.find_id, find_icon=Language.find_icon)
+    return render_template('index.html', data=data, find_icon=Language.find_icon)
 
 @app.route('/add/', methods=['GET', 'POST'])
 def add():
@@ -207,7 +207,7 @@ def admin_panel():
     data = list(Page.query.order_by(Page.visible == True, Page.date))
     for i in data:
         i.languages = Language.sort_by_name(i.languages)
-    return render_template('acp/index.html', data=data, find_id=Language.find_id, find_icon=Language.find_icon)
+    return render_template('acp/index.html', data=data, find_icon=Language.find_icon)
 
 @app.route('/acp/<slug>/', methods=['POST'])
 def admin_act(slug):
