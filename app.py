@@ -153,7 +153,8 @@ def add():
             db.session.commit()
         except:
             return render_template('add-error.html', error='general')
-        mail_admin(p)
+        if 'username' not in session:
+            mail_admin(p)
         return render_template('add-ack.html', p=p)
     else:
         return render_template('add-edit.html', data=None, langs=Language.slist())
@@ -290,9 +291,6 @@ def admin_user_edit(id):
 
 
 def mail_admin(page):
-    if not session['username']:
-        return
-
     msg = """Hello there,
 a request was sent to add a page to the Some Sites Using Nikola listing.
 
