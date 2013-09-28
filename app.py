@@ -139,6 +139,11 @@ def index():
 
     return render_template('index.html', data=data, find_icon=Language.find_icon)
 
+
+@app.route('/tos/')
+def tos():
+    return render_template('tos.html')
+
 @app.route('/add/', methods=['GET', 'POST'])
 def add():
     if request.method == 'POST':
