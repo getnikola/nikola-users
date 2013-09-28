@@ -50,7 +50,7 @@
         <li class="span4">
         <div class="thumbnail">
             {% if item.sourcelink != None %}
-                <a href="{{ item.sourcelink }}" class="btn btn-mini
+                <a href="{{ item.sourcelink|e }}" class="btn btn-mini
                     btn-primary">Source</a>
             {% else %}
                 <a href="#" class="btn btn-mini disabled">Source</a>
@@ -66,16 +66,17 @@
             </span>
 
             <div class="caption" style="margin: 0; clear: both;">
-                <h3 style="margin: 0;"><a href="{{ item.url }}">{{ item.title }}</a><br>
+                <h3 style="margin: 0;"><a href="{{ item.url|e }}">{{
+                        item.title|e }}</a><br>
                     <small>by {% if item.publishemail %}<a href="mailto:{{
-                            item.email }}">{% endif %}{{ item.author }}{% if
+                            item.email|e }}">{% endif %}{{ item.author|e }}{% if
                             item.publishemail %}</a>{% endif %}
                     </small>
                 </h3>
             </div>
 
             <p>
-            {{ item.description }}
+            {{ item.description|e }}
             </p>
 
             <p style="text-align: center;">

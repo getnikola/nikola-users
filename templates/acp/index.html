@@ -21,12 +21,13 @@
     <tbody>
     {% for p in data %}
         <tr class="{% if p.visible %}success{% else %}error{% endif %}">
-            <td>{{ p.id }}</td>
-            <td>{{ p.title }}</td>
-            <td>{{ p.author }}</td>
+            <td>{{ p.id|e }}</td>
+            <td>{{ p.title|e }}</td>
+            <td>{{ p.author|e }}</td>
             <td><i class="{% if p.publishemail %}icon-eye-open{% else
-                    %}icon-eye-close{% endif %}"></i> <a href="mailto:{{ p.email }}">{{ p.email }}</a></td>
-            <td><a href="{{ p.url }}">{{ p.url }}</a></td>
+                    %}icon-eye-close{% endif %}"></i> <a href="mailto:{{
+                    p.email|e }}">{{ p.email|e }}</a></td>
+            <td><a href="{{ p.url|e }}">{{ p.url|e }}</a></td>
             <td><i class="{% if p.sourcelink %}icon-ok{% else
                     %}icon-remove{% endif %}"></i></td>
             <td>

@@ -14,7 +14,7 @@
         <label class="control-label" for="inputTitle">Title</label>
         <div class="controls">
             <input type="text" name="title" id="inputTitle" placeholder="Title"
-            {% if data %}value="{{ data.title }}"{% endif %}
+            {% if data %}value="{{ data.title|e }}"{% endif %}
             required>
             <span class="help-inline">Should be the same as <tt>BLOG_TITLE</tt>.</span>
         </div>
@@ -23,7 +23,7 @@
         <label class="control-label" for="inputAuthor">Author</label>
         <div class="controls">
             <input type="text" name="author" id="inputAuthor" placeholder="Author"
-            {% if data %}value="{{ data.author }}"{% endif %}
+            {% if data %}value="{{ data.author|e }}"{% endif %}
             required>
             <span class="help-inline">Pseudonym, real name, what floats your
                 boat.</span>
@@ -33,7 +33,7 @@
         <label class="control-label" for="inputEmail">Email</label>
         <div class="controls">
             <input type="email" name="email" id="inputEmail" placeholder="Email"
-            {% if data %}value="{{ data.email }}"{% endif %}
+            {% if data %}value="{{ data.email|e }}"{% endif %}
             required>
             <span class="help-inline">Will not be published if you do not want to.</span>
         </div>
@@ -42,7 +42,7 @@
         <label class="control-label" for="inputURL">URL</label>
         <div class="controls">
             <input type="url" name="url" id="inputURL" placeholder="URL" required
-            {% if data %}value="{{ data.url }}"{% endif %}
+            {% if data %}value="{{ data.url|e }}"{% endif %}
             >
             <span class="help-inline">Should be the same as <tt>SITE_URL</tt>.</span>
         </div>
@@ -51,7 +51,8 @@
         <label class="control-label" for="inputDescription">Description</label>
         <div class="controls">
             <textarea name="description" id="inputDescription" placeholder="Description"
-                maxlength="250" required rows="5">{% if data %}{{ data.description }}{% endif %}</textarea>
+                maxlength="250" required rows="5">{% if data %}{{
+                data.description|e }}{% endif %}</textarea>
             <span class="help-inline">Up to 250 characters.  (we’re quite
                 generous!)</span>
         </div>
@@ -61,7 +62,7 @@
         <div class="controls">
             <input type="url" name="sourcelink" id="inputSource"
             placeholder="Site source"
-            {% if data and data.sourcelink %}value="{{ data.sourcelink }}"{% endif %}
+            {% if data and data.sourcelink %}value="{{ data.sourcelink|e }}"{% endif %}
             >
             <span class="help-inline">Link to your site source on GitHub (if any)</span>
         </div>
