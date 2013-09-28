@@ -31,7 +31,7 @@ db = SQLAlchemy(app)
 
 @app.template_filter('nl')
 def nlfilter(s):
-    return '<p>' + str(escape(s)).replace('\n\n', '</p><p>') + '</p>'
+    return '<p>' + unicode(escape(s)).replace('\n\n', '</p><p>') + '</p>'
 
 class Page(db.Model):
     id = db.Column(db.Integer, db.Sequence('page_id_seq'), primary_key=True,
