@@ -310,8 +310,7 @@ Some Sites Using Nikola at {ssun}
     message = {'text': msg, 'from_email': 'users@getnikola.com', 'from_name':
                'Some Sites Using Nikola ({0})'.format(page.author), 'to':
                [{'email': 'kwpolska@gmail.com', 'name': 'Nikola'}], 'auto_html': True}
-    sendtime = '1970-01-01 00:00:00'
-    return MANDRILL.messages.send(message=message, async=False, ip_pool='Main Pool', send_at=sendtime)
+    return MANDRILL.messages.send(message=message, async=False, ip_pool='Main Pool')
 
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
