@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% set title = "Manage" %}
 {% block content %}
+{% if 'username' not in session %}
+<p class="text-error">Access denied.</p>
+{% else %}
 {% if not data %}
 <p class="text-error">No pages exist.</p>
 {% else %}
@@ -55,5 +58,6 @@
     {% endfor %}
     </tbody>
 </table>
+{% endif %}
 {% endif %}
 {% endblock %}

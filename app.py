@@ -197,11 +197,15 @@ def admin_logout():
 
 @app.route('/acp/')
 def admin_panel():
+    if 'username' not in session:
+        return render_template('accessdenied.html')
     data = list(Page.query.order_by(Page.visible == True, Page.date))
     return render_template('acp/index.html', data=data, find_icon=Language.find_icon)
 
 @app.route('/acp/<slug>/', methods=['POST'])
 def admin_act(slug):
+    if 'username' not in session:
+        return render_template('accessdenied.html')
     page = Page.query.filter_by(id=int(slug)).first()
     if 'toggle' in request.form:
         page.visible = not page.visible
@@ -236,7 +240,7 @@ def admin_act(slug):
 
 @app.route('/login/passwd/change/', methods=['GET', 'POST'])
 def admin_change_passwd():
-    if not session['username']:
+    if 'username' not in session:
         return render_template('accessdenied.html')
 
     if request.method == 'POST':
@@ -259,11 +263,15 @@ def admin_change_passwd():
 
 @app.route('/users/')
 def admin_users():
+    if 'username' not in session:
+        return render_template('accessdenied.html')
     data = Admin.query.all()
     return render_template('acp/users.html', data=data)
 
 @app.route('/users/<id>/', methods=['POST'])
 def admin_user_edit(id):
+    if 'username' not in session:
+        return render_template('accessdenied.html')
     f = request.form
     if id == 'create':
         a = Admin(f['username'], f['email'], f['password'])
@@ -287,7 +295,6 @@ def admin_user_edit(id):
             db.session.commit()
 
     return redirect('/users/', 302)
-
 
 
 def mail_admin(page):
