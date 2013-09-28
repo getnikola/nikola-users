@@ -14,6 +14,7 @@
             <th>Email</th>
             <th>URL</th>
             <th>Source</th>
+            <th>Languages</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -28,6 +29,10 @@
             <td><a href="{{ p.url }}">{{ p.url }}</a></td>
             <td><i class="{% if p.sourcelink %}icon-ok{% else
                     %}icon-remove{% endif %}"></i></td>
+            <td>
+                {% for i in p.languages %}
+                <img src="/public/icons/{{ find_icon(i) }}.png">
+                {% endfor %}
             <td>
                 <form style="margin: 0;" method="POST" action="/acp/{{ p.id }}/">
                     <div class="btn-group">

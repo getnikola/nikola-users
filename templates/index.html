@@ -49,11 +49,28 @@
         {% for item in data %}
         <li class="span4">
         <div class="thumbnail">
-            <div class="caption">
-                <h3><a href="{{ item.url }}">{{ item.title }}</a><br>
+            {% if item.sourcelink != None %}
+                <a href="{{ item.sourcelink }}" class="btn btn-mini">Source</a>
+            {% else %}
+                <a href="#" class="btn btn-mini disabled">Source</a>
+            {% endif %}
+            <span class="pagelangs pull-right">
+                {% if item.languages %}
+                    {% for i in item.languages %}
+                        <img src="/public/icons/{{ find_icon(i) }}.png">
+                    {% endfor %}
+                {% else %}
+                    <img src="/public/icons/unknown.png">
+                {% endif %}
+            </span>
+
+            <div class="caption" style="margin: 0; clear: both;">
+                <h3 style="margin: 0;"><a href="{{ item.url }}">{{ item.title }}</a><br>
                     <small>by {% if item.publishemail %}<a href="mailto:{{
                             item.email }}">{% endif %}{{ item.author }}{% if
-                            item.publishemail %}</a>{% endif %}</small></h3>
+                            item.publishemail %}</a>{% endif %}
+                    </small>
+                </h3>
             </div>
 
             <p>
@@ -61,12 +78,6 @@
             </p>
 
             <p style="text-align: center;">
-            <a href="{{ item.url }}" class="btn btn-large btn-primary">Visit</a>
-            {% if item.sourcelink != None %}
-            <a href="{{ item.sourcelink }}" class="btn">Source</a>
-            {% else %}
-            <a href="#" class="btn disabled">Source</a>
-            {% endif %}
             </p>
         </div>
         </li>

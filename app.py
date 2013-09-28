@@ -7,10 +7,13 @@ import datetime
 import random
 from flask import Flask, render_template, request, flash, session, redirect
 from flask.ext.sqlalchemy import SQLAlchemy
+from sqlalchemy.dialects.postgresql import ARRAY
 
 urlparse.uses_netloc.append("postgres")
 dburl = urlparse.urlparse(os.environ["DATABASE_URL"])
-app = Flask(__name__)
+PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
+app = Flask(__name__, static_folder=os.path.join(PROJECT_ROOT, 'public'),
+            static_url_path='/public')
 app.config['SQLALCHEMY_DATABASE_URI'] = ''.join((
     'postgresql+psycopg2://',
     dburl.username, ':', dburl.password,
@@ -31,8 +34,9 @@ class Page(db.Model):
     visible = db.Column(db.Boolean)
     email = db.Column(db.String(512))
     publishemail = db.Column(db.Boolean)
+    languages = db.Column(ARRAY(db.Integer))
 
-    def __init__(self, title, url, author, description, email, publishemail, sourcelink = None, date = None, visible = False):
+    def __init__(self, title, url, author, description, email, publishemail, languages, sourcelink = None, date = None, visible = False):
         self.title = title
         self.url = url
         self.author = author
@@ -45,9 +49,20 @@ class Page(db.Model):
         self.visible = visible
         self.email = email
         self.publishemail = publishemail
+        self.languages = languages
 
     def __repr__(self):
         return '<Page %r>' % self.title
+
+    def languages_names(self):
+        q = self.languages
+        if q is None:
+            return []
+        names = []
+        for i in q:
+            _ = Language.query.filter(Language.id == i)
+            names += [i.name for i in _]
+        return names
 
 class Admin(db.Model):
     id = db.Column(db.Integer, db.Sequence('admin_id_seq'), primary_key=True, unique=True)
@@ -67,6 +82,36 @@ class Admin(db.Model):
     def mkpwd(password):
         return hashlib.sha512(password.encode()).hexdigest()
 
+class Language(db.Model):
+    id = db.Column(db.Integer, db.Sequence('language_id_seq'), primary_key=True, unique=True)
+    name = db.Column(db.String(512), unique=True)
+    icon = db.Column(db.String(8))
+
+    def __init__(self, name, icon):
+        self.name = name
+        self.icon = icon
+
+    def __repr__(self):
+        return '<Language %r (%r)>' % (self.name, self.icon)
+
+    @staticmethod
+    def slist():
+        return [i[0] for i in Language.query.values(Language.name)]
+
+    @staticmethod
+    def find_id(name):
+        try:
+            return Language.query.filter(Language.name == name).first().id
+        except AttributeError:
+            return None
+
+    @staticmethod
+    def find_icon(lid):
+        try:
+            return Language.query.filter(Language.id == lid).first().icon
+        except AttributeError:
+            return None
+
 @app.route('/')
 def index():
     data = Page.query.filter_by(visible=True)
@@ -78,7 +123,7 @@ def index():
 
     data = row1 + allelse
 
-    return render_template('index.html', data=data)
+    return render_template('index.html', data=data, find_icon=Language.find_icon)
 
 @app.route('/add/', methods=['GET', 'POST'])
 def add():
@@ -91,16 +136,18 @@ def add():
                 visible = True
             else:
                 visible = False
+
+            langs = [Language.find_id(i) for i in f.getlist('languages')]
             p = Page(f['title'], f['url'], f['author'], f['description'],
-                     f['email'], 'publishemail' in f, sourcelink =
-                     f['sourcelink'], visible = visible)
+                     f['email'], 'publishemail' in f, langs,
+                     sourcelink = f['sourcelink'], visible = visible)
             db.session.add(p)
             db.session.commit()
         except:
             return render_template('add-error.html', error='general')
         return render_template('add-ack.html', p=p)
     else:
-        return render_template('add.html')
+        return render_template('add-edit.html', data=None, langs=Language.slist())
 
 @app.route('/edit/')
 def edit():
@@ -141,7 +188,7 @@ def admin_logout():
 @app.route('/acp/')
 def admin_panel():
     data = list(Page.query.order_by(Page.visible == True, Page.date))
-    return render_template('acp/index.html', data=data)
+    return render_template('acp/index.html', data=data, find_icon=Language.find_icon)
 
 @app.route('/acp/<slug>/', methods=['POST'])
 def admin_act(slug):
@@ -154,19 +201,21 @@ def admin_act(slug):
     elif 'edit' in request.form:
         if request.form['edit'] == '1':
             f = request.form
+            langs = [Language.find_id(i) for i in f.getlist('languages')]
             page.title = f['title']
             page.url = f['url']
             page.author = f['author']
             page.description = f['description']
             page.email = f['email']
-            page.sourcelink = f['sourcelink']
+            page.sourcelink = f['sourcelink'] if f['sourcelink'] else None
+            page.languages = langs
             page.publishemail = 'publishemail' in f
             page.visible = 'visible' in f
             db.session.add(page)
             db.session.commit()
             return redirect('/acp/', 302)
         else:
-            return render_template('acp/edit.html', page=page)
+            return render_template('add-edit.html', data=page, langs=Language.slist(), find_id=Language.find_id)
     elif 'delete' in request.form:
         return render_template('acp/delete.html', page=page)
     elif 'del' in request.form:

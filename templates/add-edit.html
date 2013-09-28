@@ -1,12 +1,20 @@
 {% extends "base.html" %}
+{% if data %}
+{% set title = 'Edit' %}
+{% else %}
 {% set title = 'Add' %}
+{% endif %}
 {% block content %}
 
-<form class="form-horizontal" method="POST" action="/add/">
+<form class="form-horizontal" method="POST" action="">
+    {% if data %}
+    <input type="hidden" name="edit" value="1">
+    {% endif %}
     <div class="control-group">
         <label class="control-label" for="inputTitle">Title</label>
         <div class="controls">
             <input type="text" name="title" id="inputTitle" placeholder="Title"
+            {% if data %}value="{{ data.title }}"{% endif %}
             required>
             <span class="help-inline">Should be the same as <tt>BLOG_TITLE</tt>.</span>
         </div>
@@ -14,7 +22,9 @@
     <div class="control-group">
         <label class="control-label" for="inputAuthor">Author</label>
         <div class="controls">
-            <input type="text" name="author" id="inputAuthor" placeholder="Author" required>
+            <input type="text" name="author" id="inputAuthor" placeholder="Author"
+            {% if data %}value="{{ data.author }}"{% endif %}
+            required>
             <span class="help-inline">Pseudonym, real name, what floats your
                 boat.</span>
         </div>
@@ -22,14 +32,18 @@
     <div class="control-group">
         <label class="control-label" for="inputEmail">Email</label>
         <div class="controls">
-            <input type="email" name="email" id="inputEmail" placeholder="Email" required>
+            <input type="email" name="email" id="inputEmail" placeholder="Email"
+            {% if data %}value="{{ data.email }}"{% endif %}
+            required>
             <span class="help-inline">Will not be published if you do not want to.</span>
         </div>
     </div>
     <div class="control-group">
         <label class="control-label" for="inputURL">URL</label>
         <div class="controls">
-            <input type="url" name="url" id="inputURL" placeholder="URL" required>
+            <input type="url" name="url" id="inputURL" placeholder="URL" required
+            {% if data %}value="{{ data.url }}"{% endif %}
+            >
             <span class="help-inline">Should be the same as <tt>SITE_URL</tt>.</span>
         </div>
     </div>
@@ -37,7 +51,7 @@
         <label class="control-label" for="inputDescription">Description</label>
         <div class="controls">
             <textarea name="description" id="inputDescription" placeholder="Description"
-                maxlength="250" required rows="5"></textarea>
+                maxlength="250" required rows="5">{% if data %}{{ data.description }}{% endif %}</textarea>
             <span class="help-inline">Up to 250 characters.  (we’re quite
                 generous!)</span>
         </div>
@@ -46,28 +60,57 @@
         <label class="control-label" for="inputSource">Site source</label>
         <div class="controls">
             <input type="url" name="sourcelink" id="inputSource"
-            placeholder="Site source">
+            placeholder="Site source"
+            {% if data and data.sourcelink %}value="{{ data.sourcelink }}"{% endif %}
+            >
             <span class="help-inline">Link to your site source on GitHub (if any)</span>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label" for="selectLanguages">Languages</label>
+        <div class="controls">
+            <select multiple name="languages" id="selectLanguages"
+                required>
+                {% for i in langs %}
+                <option
+                {% if data and i in data.languages_names() %}
+                selected
+                {% endif %}
+                >
+                {{ i }}
+                </option>
+                {% endfor %}
+            </select>
+            <span class="help-inline">Languages your site is in.</span>
         </div>
     </div>
     <div class="control-group">
         <div class="controls">
             {% if session.username %}
             <label class="checkbox">
-                <input name="visible" type="checkbox"> Show this page.
+                <input name="visible" type="checkbox" {% if data and
+                data.visible %}checked{% endif %}> Show this page.
                 [admin only]
             </label>
             {% endif %}
             <label class="checkbox">
-                <input name="tos" type="checkbox" required> I agree to the <a
+                <input name="tos" type="checkbox" required
+                {% if data %}checked disabled{% endif %}
+                > I agree to the <a
                     href="/tos/">Terms of
                     Service and Privacy Policy</a>.
             </label>
             <label class="checkbox">
-                <input name="publishemail" type="checkbox"> I want my e-mail
+                <input name="publishemail" type="checkbox" {% if
+                data and data.publishemail %}checked{% endif %}> I want my e-mail
                 visible publicly.
             </label>
-            <button type="submit" class="btn">Request addition</button>
+            <button type="submit" class="btn">
+                {% if data %}
+                    Edit
+                {% else %}
+                    Request addition
+                {% endif %}</button>
         </div>
     </div>
 </form>
