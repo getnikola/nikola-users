@@ -96,7 +96,9 @@ class Language(db.Model):
 
     @staticmethod
     def slist():
-        return [i[0] for i in Language.query.values(Language.name)]
+        l = sorted([i[0] for i in Language.query.values(Language.name)])
+        l.remove('English')
+        return ['English'] + l
 
     @staticmethod
     def find_id(name):
@@ -112,6 +114,18 @@ class Language(db.Model):
         except AttributeError:
             return None
 
+    @staticmethod
+    def find_name(lid):
+        try:
+            return Language.query.filter(Language.id == lid).first().name
+        except AttributeError:
+            return None
+
+    @staticmethod
+    def sort_by_names(ids):
+        langs = [Language.find_name(i) for i in ids]
+        return sorted(langs)
+
 @app.route('/')
 def index():
     data = Page.query.filter_by(visible=True)
@@ -122,6 +136,9 @@ def index():
     random.shuffle(allelse)
 
     data = row1 + allelse
+
+    for i in data:
+        i.languages = Language.sort_by_name(i.languages)
 
     return render_template('index.html', data=data, find_icon=Language.find_icon)
 
@@ -188,6 +205,8 @@ def admin_logout():
 @app.route('/acp/')
 def admin_panel():
     data = list(Page.query.order_by(Page.visible == True, Page.date))
+    for i in data:
+        i.languages = Language.sort_by_name(i.languages)
     return render_template('acp/index.html', data=data, find_icon=Language.find_icon)
 
 @app.route('/acp/<slug>/', methods=['POST'])
