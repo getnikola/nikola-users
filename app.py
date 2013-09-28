@@ -27,6 +27,11 @@ except KeyError:
     print('Mandrill unavailable')
 db = SQLAlchemy(app)
 
+
+@app.template.filter('nl')
+def nlfilter(s):
+    return '<p>' + s.replace('\n\n', '</p><p>') + '</p>'
+
 class Page(db.Model):
     id = db.Column(db.Integer, db.Sequence('page_id_seq'), primary_key=True,
                    unique=True)

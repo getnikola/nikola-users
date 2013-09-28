@@ -75,9 +75,7 @@
                 </h3>
             </div>
 
-            <p>
-            {{ item.description|e }}
-            </p>
+            {{ item.description|e|nlfilter }}
 
             <p style="text-align: center;">
             </p>
