@@ -31,7 +31,7 @@
                     %}icon-remove{% endif %}"></i></td>
             <td>
                 {% for i in p.languages %}
-                <img src="/public/icons/{{ find_icon(i) }}.png">
+                <img src="/public/icons/{{ find_icon(find_id(i)) }}.png">
                 {% endfor %}
             <td>
                 <form style="margin: 0;" method="POST" action="/acp/{{ p.id }}/">
