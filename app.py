@@ -96,7 +96,8 @@ class Language(db.Model):
 
     @staticmethod
     def slist():
-        return [i[0] for i in Language.query.values(Language.name)]
+        _ = [i[0] for i in Language.query.values(Language.name)]
+        return ['English'] + sorted(_[1:])
 
     @staticmethod
     def find_id(name):
