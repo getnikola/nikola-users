@@ -47,7 +47,7 @@
 {% else %}
     <ul class="pages-line unstyled featured">
         {% for item in data %}
-        <li class="span4">
+        <li class="span3">
         <div class="thumbnail">
             {% if item.sourcelink != None %}
                 <a href="{{ item.sourcelink|e }}" class="btn btn-mini
@@ -66,22 +66,20 @@
             </span>
 
             <div class="caption" style="margin: 0; clear: both;">
-                <h3 style="margin: 0;"><a href="{{ item.url|e }}">{{
+                <h4 style="margin: 0;"><a href="{{ item.url|e }}">{{
                         item.title|e }}</a><br>
                     <small>by {% if item.publishemail %}<a href="mailto:{{
                             item.email|e }}">{% endif %}{{ item.author|e }}{% if
                             item.publishemail %}</a>{% endif %}
                     </small>
-                </h3>
+                </h4>
             </div>
-
-            {{ item.description|e|nlfilter }}
-
-            <p style="text-align: center;">
-            </p>
+            {% autoescape false %}
+            {{ item.description|nl }}
+            {% endautoescape %}
         </div>
         </li>
-        {% if loop.index % 3 == 0 %}
+        {% if loop.index % 4 == 0 %}
     </ul><ul class="pages-line unstyled">
         {% endif %}
         {% endfor %}

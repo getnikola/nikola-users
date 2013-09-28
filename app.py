@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import os
 import hashlib
@@ -6,7 +7,7 @@ import urlparse
 import datetime
 import random
 import mandrill
-from flask import Flask, render_template, request, flash, session, url_for, redirect
+from flask import Flask, render_template, request, flash, session, url_for, redirect, escape
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import ARRAY
 
@@ -28,9 +29,9 @@ except KeyError:
 db = SQLAlchemy(app)
 
 
-@app.template.filter('nl')
+@app.template_filter('nl')
 def nlfilter(s):
-    return '<p>' + s.replace('\n\n', '</p><p>') + '</p>'
+    return '<p>' + str(escape(s)).replace('\n\n', '</p><p>') + '</p>'
 
 class Page(db.Model):
     id = db.Column(db.Integer, db.Sequence('page_id_seq'), primary_key=True,
@@ -129,7 +130,9 @@ def index():
     # The first row is ralsina, no matter what
     row1 = list(data.filter_by(author='Roberto '
                                'Alsina').order_by(Page.date))
-    allelse = list(data.filter(Page.author != 'Roberto Alsina'))
+    row1 += list(data.filter_by(author='Chris “Kwpolska” '
+                               'Warrick').order_by(Page.date))
+    allelse = list(data.filter(Page.author != 'Roberto Alsina').filter(Page.author != 'Chris “Kwpolska” Warrick'))
     random.shuffle(allelse)
 
     data = row1 + allelse
