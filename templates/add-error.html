@@ -4,6 +4,8 @@
 <p class="text-error lead">Something went wrong.</p>
 {% if error == 'tos' %}
 <p class="text-error">You did not accept the Terms of Service.</p>
+{% elif error == 'empty' %}
+<p class="text-error">Some fields were empty.</p>
 {% elif error == 'general' %}
 <p class="text-error">Possible causes include:</p>
 

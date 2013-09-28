@@ -130,15 +130,17 @@ def index():
 def add():
     if request.method == 'POST':
         f = request.form
+        langs = [Language.find_id(i) for i in f.getlist('languages')]
         if 'tos' not in f:
             return render_template('add-error.html', error='tos')
+        elif not f['title'] or not f['author'] or not f['email'] or not f['url'] or not langs:
+            return render_template('add-error.html', error='empty')
         try:
             if 'visible' in f and 'username' in session:
                 visible = True
             else:
                 visible = False
 
-            langs = [Language.find_id(i) for i in f.getlist('languages')]
             p = Page(f['title'], f['url'], f['author'], f['description'],
                      f['email'], 'publishemail' in f, langs,
                      sourcelink = f['sourcelink'], visible = visible)
