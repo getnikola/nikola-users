@@ -139,6 +139,10 @@ rel="stylesheet" type="text/css">
             and Chris Warrick</a>  |  <a
             href="https://twitter.com/intent/user?screen_name=GetNikola">Follow Nikola on Twitter</a>  |  Theme is <a href="http://bootswatch.com/cerulean/">Cerulean</a>
 
+        {% if 'username' in session or show_cookies %}
+        <br>This site uses cookies for authentication purposes.
+        {% endif %}
+
     </div>
 
     <script src="http://getnikola.com/assets/js/jquery-1.10.2.min.js" type="text/javascript"></script>
