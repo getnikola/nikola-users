@@ -59,7 +59,7 @@
             <span class="pagelangs pull-right">
                 {% if item.languages %}
                     {% for i in item.languages %}
-                        <img src="/public/icons/{{ find_icon(i) }}.png">
+                        <img src="/public/icons/{{ icons[i] }}.png">
                     {% endfor %}
                 {% else %}
                     <img src="/public/icons/unknown.png">

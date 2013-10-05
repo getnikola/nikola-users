@@ -21,6 +21,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = ''.join((
     dburl.username, ':', dburl.password,
     '@', dburl.hostname, ':', str(dburl.port),
     '/', dburl.path[1:]))
+CSRF_ENABLED = True
 app.config['SECRET_KEY'] = os.environ["SECRET_KEY"]
 try:
     MANDRILL = mandrill.Mandrill(os.environ['MANDRILL_APIKEY'])
@@ -105,24 +106,18 @@ class Language(db.Model):
     def __repr__(self):
         return '<Language %r (%r)>' % (self.name, self.icon)
 
-    @staticmethod
-    def slist():
-        _ = [i[0] for i in db.session.query(Language.name).all()]
-        return ['English'] + sorted(_[1:])
 
-    @staticmethod
-    def find_id(name):
-        try:
-            return Language.query.filter(Language.name == name).first().id
-        except AttributeError:
-            return None
+class LanguageFetcher(object):
+    """A language fetcher."""
 
-    @staticmethod
-    def find_icon(lid):
-        try:
-            return Language.query.filter(Language.id == lid).first().icon
-        except AttributeError:
-            return None
+    def __init__(self):
+        self.llist = Language.query.all()
+        _ = [i.name for i in self.llist]
+        self.names = ['English'] + sorted(_[1:])
+        self.ids = {i.name: i.id for i in self.llist}
+        self.icons = {i.id: i.icon for i in self.llist}
+
+LF = LanguageFetcher()
 
 @app.route('/')
 def index():
@@ -130,6 +125,7 @@ def index():
     # The first row is ralsina, no matter what
     row1 = list(data.filter_by(author='Roberto '
                                'Alsina').order_by(Page.date))
+    # we have one more place to fill, sorry
     row1 += list(data.filter_by(author='Chris “Kwpolska” '
                                'Warrick').order_by(Page.date))
     allelse = list(data.filter(Page.author != 'Roberto Alsina').filter(Page.author != 'Chris “Kwpolska” Warrick'))
@@ -137,7 +133,7 @@ def index():
 
     data = row1 + allelse
 
-    return render_template('index.html', data=data, find_icon=Language.find_icon)
+    return render_template('index.html', data=data, icons=LF.icons)
 
 
 @app.route('/tos/')
@@ -148,7 +144,7 @@ def tos():
 def add():
     if request.method == 'POST':
         f = request.form
-        langs = [Language.find_id(i) for i in f.getlist('languages')]
+        langs = [LF.ids[i] for i in f.getlist('languages')]
         if 'tos' not in f:
             return render_template('add-error.html', error='tos')
         elif not f['title'] or not f['author'] or not f['email'] or not f['url'] or not langs:
@@ -170,7 +166,7 @@ def add():
             mail_admin(p)
         return render_template('add-ack.html', p=p)
     else:
-        return render_template('add-edit.html', data=None, langs=Language.slist())
+        return render_template('add-edit.html', data=None, langs=LF.names)
 
 @app.route('/edit/')
 def edit():
@@ -213,7 +209,7 @@ def admin_panel():
     if 'username' not in session:
         return render_template('accessdenied.html')
     data = list(Page.query.order_by(Page.visible == True, Page.date))
-    return render_template('acp/index.html', data=data, find_icon=Language.find_icon)
+    return render_template('acp/index.html', data=data, icons=LF.icons)
 
 @app.route('/acp/<slug>/', methods=['POST'])
 def admin_act(slug):
@@ -228,7 +224,7 @@ def admin_act(slug):
     elif 'edit' in request.form:
         if request.form['edit'] == '1':
             f = request.form
-            langs = [Language.find_id(i) for i in f.getlist('languages')]
+            langs = [LF.ids[i] for i in f.getlist('languages')]
             page.title = f['title']
             page.url = f['url']
             page.author = f['author']
@@ -242,7 +238,7 @@ def admin_act(slug):
             db.session.commit()
             return redirect('/acp/', 302)
         else:
-            return render_template('add-edit.html', data=page, langs=Language.slist(), find_id=Language.find_id)
+            return render_template('add-edit.html', data=page, langs=LF.names, langids=LF.ids)
     elif 'delete' in request.form:
         return render_template('acp/delete.html', page=page)
     elif 'del' in request.form:

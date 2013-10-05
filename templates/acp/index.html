@@ -35,10 +35,11 @@
                     %}icon-remove{% endif %}"></i></td>
             <td>
                 {% for i in p.languages %}
-                <img src="/public/icons/{{ find_icon(i) }}.png">
+                <img src="/public/icons/{{ icons[i] }}.png">
                 {% endfor %}
             <td>
-                <form style="margin: 0;" method="POST" action="/acp/{{ p.id }}/">
+                <form style="margin: 0;" method="POST"
+                    action="/acp/{{ p.id }}/">
                     <div class="btn-group">
                     <button type="submit" name="toggle" class="btn
                         {% if p.visible %}btn-inverse{% else %}btn-success{% endif %}">
