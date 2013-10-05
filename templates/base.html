@@ -7,16 +7,15 @@
 <meta name="author" content="Roberto Alsina">
 <title>{{ title }} | Some Sites Using Nikola</title>
 
-<link href="http://getnikola.com/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="http://getnikola.com/assets/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css">
-<link href="http://getnikola.com/assets/css/rst.css" rel="stylesheet" type="text/css">
-<link href="http://getnikola.com/assets/css/code.css" rel="stylesheet" type="text/css">
-<link href="http://getnikola.com/assets/css/colorbox.css" rel="stylesheet" type="text/css">
-<link href="http://getnikola.com/assets/css/theme.css" rel="stylesheet" type="text/css">
-<link href="http://getnikola.com/assets/css/custom.css"
-rel="stylesheet" type="text/css">
+        <link href="http://getnikola.com/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="http://getnikola.com/assets/css/rst.css" rel="stylesheet" type="text/css">
+        <link href="http://getnikola.com/assets/css/code.css" rel="stylesheet" type="text/css">
+        <link href="http://getnikola.com/assets/css/colorbox.css" rel="stylesheet" type="text/css">
+        <link href="http://getnikola.com/assets/css/theme.css" rel="stylesheet" type="text/css">
+        <link href="http://getnikola.com/assets/css/custom.css" rel="stylesheet" type="text/css">
+
 <style type="text/css">
-.pages-line .span3 {
+.pages-line .col-md-3 {
     margin-bottom: 2.564102564102564%;
 }
 
@@ -118,10 +117,6 @@ rel="stylesheet" type="text/css">
 <div class="container-fluid" id="container-fluid">
     <!--Body content-->
     <div class="row-fluid">
-    {% if not wide %}
-        <div class="span2"></div>
-        <div class="span8">
-    {% endif %}
     <h1>{{ title }}</h1>
     {% block subtitle %}{% endblock %}
     {% for category, message in get_flashed_messages(with_categories=true) %}
@@ -134,9 +129,6 @@ rel="stylesheet" type="text/css">
 
     {% block content %}
     {% endblock %}
-    {% if not wide %}
-        </div>
-    {% endif %}
     </div>
     <div class="footerbox">
         Contents © 2012-2013 <a href="mailto:users@getnikola.com">Roberto Alsina
