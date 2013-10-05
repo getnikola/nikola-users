@@ -2,24 +2,23 @@
 {% set title = "Change your password" %}
 {% block content %}
 
-<form class="form-horizontal" method="POST" action="/login/passwd/change/">
-    <input type="hidden" name="act" value="in">
-    <div class="control-group">
-        <label class="control-label" for="inputPassword">Password</label>
-        <div class="controls">
-            <input type="password" id="inputPassword" name="password" placeholder="Password" required>
+<form class="form-horizontal" role="form" method="POST" action="/login/passwd/change/">
+    <div class="form-group">
+        <label class="control-label col-lg-2" for="inputPassword">Password</label>
+        <div class="col-lg-3">
+            <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password" required>
         </div>
     </div>
-    <div class="control-group">
-        <label class="control-label" for="inputConfirm">Confirm</label>
-        <div class="controls">
-            <input type="password" id="inputConfirm" name="confirm"
+    <div class="form-group">
+        <label class="control-label col-lg-2" for="inputConfirm">Confirm</label>
+        <div class="col-lg-3">
+            <input type="password" class="form-control" id="inputConfirm" name="confirm"
             placeholder="Confirm" required>
         </div>
     </div>
-    <div class="control-group">
-        <div class="controls">
-            <button type="submit" class="btn">Save</button>
+    <div class="form-group">
+        <div class="col-lg-offset-2 col-lg-3">
+            <button type="submit" class="btn btn-primary">Save</button>
         </div>
     </div>
 </form>

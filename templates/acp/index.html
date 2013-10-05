@@ -23,16 +23,16 @@
     </thead>
     <tbody>
     {% for p in data %}
-        <tr class="{% if p.visible %}success{% else %}error{% endif %}">
+        <tr class="{% if p.visible %}success{% else %}danger{% endif %}">
             <td>{{ p.id|e }}</td>
             <td>{{ p.title|e }}</td>
             <td>{{ p.author|e }}</td>
-            <td><i class="{% if p.publishemail %}icon-eye-open{% else
-                    %}icon-eye-close{% endif %}"></i> <a href="mailto:{{
+            <td><i class="glyphicon{% if p.publishemail %}glyphicon-eye-open{% else
+                    %}glyphicon-eye-close{% endif %}"></i> <a href="mailto:{{
                     p.email|e }}">{{ p.email|e }}</a></td>
             <td><a href="{{ p.url|e }}">{{ p.url|e }}</a></td>
-            <td><i class="{% if p.sourcelink %}icon-ok{% else
-                    %}icon-remove{% endif %}"></i></td>
+            <td><i class="glyphicon {% if p.sourcelink %}glyphicon-ok{% else
+                    %}glyphicon-remove{% endif %}"></i></td>
             <td>
                 {% for i in p.languages %}
                 <img src="/public/icons/{{ icons[i] }}.png">
@@ -41,16 +41,16 @@
                 <form style="margin: 0;" method="POST"
                     action="/acp/{{ p.id }}/">
                     <div class="btn-group">
-                    <button type="submit" name="toggle" class="btn
-                        {% if p.visible %}btn-inverse{% else %}btn-success{% endif %}">
-                        <i class="icon-eye-{% if p.visible %}close{% else %}open{% endif %}
-                        icon-white"></i>
+                    <button type="submit" name="toggle" class="btn btn-xs
+                        {% if p.visible %}btn-info{% else %}btn-success{% endif %}">
+                        <i class="glyphicon glyphicon-eye-{% if p.visible %}close{% else %}open{% endif %}"></i>
                     </button>
-                    <button type="submit" name="edit" class="btn btn-info">
-                        <i class="icon-edit icon-white"></i>
+                    <button type="submit" name="edit" class="btn btn-xs
+                        btn-primary">
+                        <i class="glyphicon glyphicon-edit"></i>
                     </button>
-                    <button type="submit" name="delete" class="btn btn-danger">
-                        <i class="icon-trash icon-white"></i>
+                    <button type="submit" name="delete" class="btn btn-xs btn-danger">
+                        <i class="glyphicon glyphicon-trash"></i>
                     </button>
                 </div>
                 </form>

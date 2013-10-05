@@ -20,17 +20,17 @@
     <tr>
         <form style="margin: 0;" method="POST" action="/users/{{ p.id }}/">
             <td>{{ p.id }}</td>
-            <td><input name="username" type="text" value="{{ p.username }}"
+            <td><input class="form-control" name="username" type="text" value="{{ p.username }}"
                 required></td>
-            <td><input name="email" type="email" value="{{ p.email }}" required></td>
+            <td><input class="form-control" name="email" type="email" value="{{ p.email }}" required></td>
             <td>
-                <input name="password" type="password" placeholder="(leave as is)">
-                <td style="width: 3em;">
+                <input class="form-control" name="password" type="password" placeholder="(leave as is)">
+                <td style="width: 3m;">
                     <div class="btn-group">
-                        <button type="submit" class="btn btn-inverse"><i
-                                class="icon-ok icon-white"></i></button>
-                        <button type="submit" name="delete" class="btn btn-danger">
-                            <i class="icon-trash icon-white"></i>
+                        <button type="submit" class="btn btn-xs btn-success"><i
+                                class="glyphicon glyphicon-ok"></i></button>
+                        <button type="submit" name="delete" class="btn btn-xs btn-danger">
+                            <i class="glyphicon glyphicon-trash"></i>
                         </div>
                     </button>
                 </td>
@@ -40,11 +40,11 @@
         <form style="margin: 0;" method="POST" action="/users/create/">
             <tr class="success">
                 <td>New:</td>
-                <td><input name="username" type="text" required></td>
-                <td><input name="email" type="email" required></td>
-                <td><input name="password" type="password" required></td>
-                <td><button type="submit" name="add" class="btn btn-success"><i
-                            class="icon-plus icon-white"></i></button></td>
+                <td><input class="form-control" name="username" type="text" required></td>
+                <td><input class="form-control" name="email" type="email" required></td>
+                <td><input class="form-control" name="password" type="password" required></td>
+                <td><button type="submit" name="add" class="btn btn-xs btn-success"><i
+                            class="glyphicon glyphicon-plus"></i></button></td>
             </tr>
             </tbody>
         </table>

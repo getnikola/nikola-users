@@ -6,12 +6,12 @@
     Fancy seeing your site here?  Or the other way around?  Is
     the data incorrect?  If yes,
     <div class="btn-group">
-        <a href="/add/" class="btn btn-primary">Add</a>
-        <a href="/edit/" class="btn" id="edit-btn">Edit</a>
-        <a href="/remove/" class="btn" id="remove-btn">Remove</a>
+        <a href="/add/" class="btn btn-success">Add</a>
+        <a href="/edit/" class="btn btn-primary" id="edit-btn">Edit</a>
+        <a href="/remove/" class="btn btn-danger" id="remove-btn">Remove</a>
     </div>
 
-    <div id="edit-alert" class="alert alert-block" style="display:
+    <div id="edit-alert" class="alert alert-block alert-info" style="display:
         none; margin-top: 20px;">
         <h4>Edit</h4>
         <p>
@@ -27,7 +27,7 @@
     </div>
 
 
-    <div id="remove-alert" class="alert alert-block" style="display:
+    <div id="remove-alert" class="alert alert-block alert-danger" style="display:
         none; margin-top: 20px;">
         <h4>Remove</h4>
         <p>
@@ -51,10 +51,10 @@
         <li class="col-md-3">
         <div class="thumbnail">
             {% if item.sourcelink != None %}
-                <a href="{{ item.sourcelink|e }}" class="btn btn-mini
+                <a href="{{ item.sourcelink|e }}" class="btn btn-sm
                     btn-primary">Source</a>
             {% else %}
-                <a href="#" class="btn btn-mini disabled">Source</a>
+                <a href="#" class="btn btn-primary btn-sm disabled">Source</a>
             {% endif %}
             <span class="pagelangs pull-right">
                 {% if item.languages %}
