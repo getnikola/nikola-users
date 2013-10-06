@@ -25,3 +25,5 @@ To do
 
 * admin password retrieval
 * edit/remove facilities for end-users
+* search
+* AJAX
