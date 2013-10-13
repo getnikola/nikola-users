@@ -121,17 +121,8 @@ LF = LanguageFetcher()
 
 @app.route('/')
 def index():
-    data = Page.query.filter_by(visible=True)
-    # The first row is ralsina, no matter what
-    row1 = list(data.filter_by(author='Roberto '
-                               'Alsina').order_by(Page.date))
-    # we have one more place to fill, sorry
-    row1 += list(data.filter_by(author='Chris “Kwpolska” '
-                               'Warrick').order_by(Page.date))
-    allelse = list(data.filter(Page.author != 'Roberto Alsina').filter(Page.author != 'Chris “Kwpolska” Warrick'))
-    random.shuffle(allelse)
-
-    data = row1 + allelse
+    data = Page.query.filter_by(visible=True).all()
+    random.shuffle(data)
 
     return render_template('index.html', data=data, icons=LF.icons)
 
