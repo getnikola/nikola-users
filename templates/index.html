@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% set title = "Sites" %}
 {% block content %}
-<div class="well">
+<div class="well well-sm" style="margin: 0 20px 20px 20px; font-size:
+    14px;">
     Fancy seeing your site here?  Or the other way around?  Is
     the data incorrect?  If yes,
     <div class="btn-group">
@@ -25,7 +26,6 @@
                 inconvenience.  (this may change at any given moment.)</small></p>
     </div>
 
-
     <div id="remove-alert" class="alert alert-block alert-danger" style="display:
         none; margin-top: 20px;">
         <h4>Remove</h4>
@@ -40,6 +40,9 @@
                 fraudulent request.  Sorry for the
                 inconvenience.  (this may change at any given moment.)</small></p>
     </div>
+    <p class="text-muted" style="font-size: 14px;"><strong>Notice:</strong>
+    Many sites are not
+    fully described yet.  We apologize for the inconvenience.</p>
 </div>
 
 {% if not data %}
