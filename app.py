@@ -53,7 +53,7 @@ class Page(db.Model):
         self.url = url
         self.author = author
         self.description = description
-        self.sourcelink = sourcelink
+        self.sourcelink = sourcelink if sourcelink else None
         if date is None:
             self.date = datetime.datetime.now()
         else:
