@@ -124,7 +124,7 @@ def index():
     data = Page.query.filter_by(visible=True).all()
     random.shuffle(data)
 
-    return render_template('index.html', data=data, icons=LF.icons)
+    return render_template('index.html', data=data, icons=LF.icons, len=len)
 
 
 @app.route('/tos/')
