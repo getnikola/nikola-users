@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="description" content="">
 <meta name="author" content="Roberto Alsina">
-<title>{{ title }} | Some Sites Using Nikola</title>
+<title>{% block title1 %}{{ title }}{% endblock %} | Some Sites Using Nikola</title>
 
 <link href="http://getnikola.com/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="http://getnikola.com/assets/css/rst.css" rel="stylesheet" type="text/css">
@@ -17,6 +17,10 @@
 <style type="text/css">
 .pages-line .col-md-3 {
     margin-bottom: 2.564102564102564%;
+}
+
+ul.pages-line {
+    padding-left: 0;
 }
 
 .pages-line li .thumbnail {
@@ -32,6 +36,12 @@
     margin: 0;
     font-size: 10.5pt;
 }
+
+.pagelangs img {
+    max-width: 100%;
+    vertical-align: middle;
+}
+
 /*
 .featured li .thumbnail {
     background: #eec;
@@ -42,12 +52,6 @@
     border: 1px #bbb solid;
     padding-left: 5px;
     height: 21px;
-}
-
-.pagelangs img {
-    margin-right: 5px;
-    max-width: 100%;
-    vertical-align: middle;
 }
 
 .featured .pagelangs {
@@ -147,7 +151,7 @@ footer {
 <div class="container-fluid" id="container-fluid">
     <!--Body content-->
     <div class="row-fluid">
-    <h1>{{ title }}</h1>
+        <h1>{% block title2 %}{{ title }}{% endblock title2 %}</h1>
     {% block subtitle %}{% endblock %}
     {% for category, message in get_flashed_messages(with_categories=true) %}
     <div class="alert alert-dismissable

@@ -1,5 +1,10 @@
 {% extends "base.html" %}
-{% set title = "{{ len(data) }} Sites" %}
+{% block title1 %}
+{{ len(data) }} Sites
+{% endblock %}
+{% block title2 %}
+{{ len(data) }} Sites
+{% endblock %}
 {% block content %}
 <div class="well well-sm" style="margin: 0 20px 20px 20px; font-size:
     14px;">
@@ -40,10 +45,10 @@
                 fraudulent request.  Sorry for the
                 inconvenience.  (this may change at any given moment.)</small></p>
     </div>
-    <p class="text-muted" style="font-size: 14px;"><strong>Notice:</strong>
+</div>
+    <p class="text-muted" style="font-size: 14px; margin-left: 15px;"><strong>Notice:</strong>
     Many sites are not
     fully described yet.  We apologize for the inconvenience.</p>
-</div>
 
 {% if not data %}
     <p class="text-error">No pages found…</p>
@@ -56,7 +61,8 @@
                 <a href="{{ item.sourcelink|e }}" class="btn btn-sm
                     btn-primary">Source</a>
             {% else %}
-                <a href="#" class="btn btn-primary btn-sm disabled">Source</a>
+                <a href="#" class="btn btn-primary btn-sm disabled"
+                    style="visibility: hidden;">Source</a>
             {% endif %}
             <span class="pagelangs pull-right">
                 {% if item.languages %}
