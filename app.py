@@ -7,6 +7,7 @@ import urlparse
 import datetime
 import random
 import mandrill
+import newrelic.agent
 from flask import Flask, render_template, request, flash, session, url_for, redirect, escape
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import ARRAY
@@ -124,12 +125,12 @@ def index():
     data = Page.query.filter_by(visible=True).all()
     random.shuffle(data)
 
-    return render_template('index.html', data=data, icons=LF.icons, len=len)
+    return render_template('index.html', data=data, icons=LF.icons, len=len, header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
 
 
 @app.route('/tos/')
 def tos():
-    return render_template('tos.html')
+    return render_template('tos.html', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
 
 @app.route('/add/', methods=['GET', 'POST'])
 def add():
@@ -137,9 +138,9 @@ def add():
         f = request.form
         langs = [LF.ids[i] for i in f.getlist('languages')]
         if 'tos' not in f:
-            return render_template('add-error.html', error='tos')
+            return render_template('add-error.html', error='tos', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
         elif not f['title'] or not f['author'] or not f['email'] or not f['url'] or not langs:
-            return render_template('add-error.html', error='empty')
+            return render_template('add-error.html', error='empty', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
         try:
             if 'visible' in f and 'username' in session:
                 visible = True
@@ -152,20 +153,20 @@ def add():
             db.session.add(p)
             db.session.commit()
         except:
-            return render_template('add-error.html', error='general')
+            return render_template('add-error.html', error='general', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
         if 'username' not in session:
             mail_admin(p)
-        return render_template('add-ack.html', p=p)
+        return render_template('add-ack.html', p=p, header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
     else:
-        return render_template('add-edit.html', data=None, langs=LF.names)
+        return render_template('add-edit.html', data=None, langs=LF.names, header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
 
 @app.route('/edit/')
 def edit():
-    return render_template('edit-remove.html', action='edit')
+    return render_template('edit-remove.html', action='edit', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
 
 @app.route('/remove/')
 def remove():
-    return render_template('edit-remove.html', action='remove')
+    return render_template('edit-remove.html', action='remove', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
 
 @app.route('/login/', methods=['GET', 'POST'])
 def admin_login():
@@ -175,7 +176,7 @@ def admin_login():
                 request.form['username'])).first()
             if not u or Admin.mkpwd(request.form['password']) != u.password:
                 flash('Login failed.', category='error')
-                return render_template('login.html')
+                return render_template('login.html', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
             else:
                 session['username'] = u.username
                 flash('Logged in!')
@@ -187,7 +188,7 @@ def admin_login():
         if 'username' in session:
             return redirect('/', 302)
         else:
-            return render_template('login.html')
+            return render_template('login.html', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
 
 @app.route('/login/out/')
 def admin_logout():
@@ -198,14 +199,14 @@ def admin_logout():
 @app.route('/acp/')
 def admin_panel():
     if 'username' not in session:
-        return render_template('accessdenied.html')
+        return render_template('accessdenied.html', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
     data = list(Page.query.order_by(Page.visible == True, Page.date))
-    return render_template('acp/index.html', data=data, icons=LF.icons)
+    return render_template('acp/index.html', data=data, icons=LF.icons, header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
 
 @app.route('/acp/<slug>/', methods=['POST'])
 def admin_act(slug):
     if 'username' not in session:
-        return render_template('accessdenied.html')
+        return render_template('accessdenied.html', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
     page = Page.query.filter_by(id=int(slug)).first()
     if 'toggle' in request.form:
         page.visible = not page.visible
@@ -229,9 +230,9 @@ def admin_act(slug):
             db.session.commit()
             return redirect('/acp/', 302)
         else:
-            return render_template('add-edit.html', data=page, langs=LF.names, langids=LF.ids)
+            return render_template('add-edit.html', data=page, langs=LF.names, langids=LF.ids, header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
     elif 'delete' in request.form:
-        return render_template('acp/delete.html', page=page)
+        return render_template('acp/delete.html', page=page, header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
     elif 'del' in request.form:
         if request.form['del'] == '1':
             db.session.delete(page)
@@ -241,7 +242,7 @@ def admin_act(slug):
 @app.route('/login/passwd/change/', methods=['GET', 'POST'])
 def admin_change_passwd():
     if 'username' not in session:
-        return render_template('accessdenied.html')
+        return render_template('accessdenied.html', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
 
     if request.method == 'POST':
         if request.form['password'] == request.form['confirm']:
@@ -256,22 +257,22 @@ def admin_change_passwd():
             return redirect('/login/', 302)
         else:
             flash('The passwords do not match.', category='error')
-            return render_template('changepasswd.html')
+            return render_template('changepasswd.html', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
 
     else:
-        return render_template('changepasswd.html')
+        return render_template('changepasswd.html', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
 
 @app.route('/users/')
 def admin_users():
     if 'username' not in session:
-        return render_template('accessdenied.html')
+        return render_template('accessdenied.html', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
     data = Admin.query.all()
-    return render_template('acp/users.html', data=data)
+    return render_template('acp/users.html', data=data, header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
 
 @app.route('/users/<id>/', methods=['POST'])
 def admin_user_edit(id):
     if 'username' not in session:
-        return render_template('accessdenied.html')
+        return render_template('accessdenied.html', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
     f = request.form
     if id == 'create':
         a = Admin(f['username'], f['email'], f['password'])
@@ -284,7 +285,7 @@ def admin_user_edit(id):
                 db.session.delete(a)
                 db.session.commit()
         elif 'delete' in f:
-            return render_template('acp/userdel.html', user=a)
+            return render_template('acp/userdel.html', user=a, header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
         else:
             a.username = f['username']
             a.email = f['email']
