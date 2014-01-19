@@ -23,7 +23,7 @@ Done
 To do
 -----
 
-* admin password retrieval
+* wtforms and flask-login
 * edit/remove facilities for end-users
 * search
 * AJAX
