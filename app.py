@@ -322,9 +322,9 @@ Some Sites Using Nikola at {ssun}
            email=page.email, mgmt=url_for('admin_panel', _external=True),
            sig='-- ', ssun=url_for('index', _external=True))
 
-    message = {'text': msg, 'from_email': 'users@getnikola.com', 'from_name':
+    message = {'text': msg, 'from_email': 'request@getnikola.com', 'from_name':
                'Some Sites Using Nikola ({0})'.format(page.author), 'to':
-               [{'email': 'info@getnikola.com', 'name': 'Nikola'}],
+               [{'email': 'users@getnikola.com', 'name': 'Nikola'}],
                'auto_html': False, 'subject':
                '[Some Sites Using Nikola] Addition Request'}
     return MANDRILL.messages.send(message=message, async=False, ip_pool='Main Pool')
