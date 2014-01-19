@@ -10,6 +10,7 @@ import mandrill
 import newrelic.agent
 from flask import Flask, render_template, request, flash, session, url_for, redirect, escape
 from flask.ext.sqlalchemy import SQLAlchemy
+from sqlalchemy import exc as sqlexc
 from sqlalchemy.dialects.postgresql import ARRAY
 
 urlparse.uses_netloc.append("postgres")
@@ -34,6 +35,9 @@ db = SQLAlchemy(app)
 @app.template_filter('nl')
 def nlfilter(s):
     return '<p>' + unicode(escape(s)).replace('\n\n', '</p><p>') + '</p>'
+
+def addslash(u):
+    return u if u.endswith('/') else u + '/'
 
 class Page(db.Model):
     id = db.Column(db.Integer, db.Sequence('page_id_seq'), primary_key=True,
@@ -147,7 +151,7 @@ def add():
             else:
                 visible = False
 
-            p = Page(f['title'], f['url'], f['author'], f['description'],
+            p = Page(f['title'], addslash(f['url']), f['author'], f['description'],
                      f['email'], 'publishemail' in f, langs,
                      sourcelink = f['sourcelink'], visible = visible)
             db.session.add(p)
@@ -215,19 +219,22 @@ def admin_act(slug):
         return redirect('/acp/', 302)
     elif 'edit' in request.form:
         if request.form['edit'] == '1':
-            f = request.form
-            langs = [LF.ids[i] for i in f.getlist('languages')]
-            page.title = f['title']
-            page.url = f['url']
-            page.author = f['author']
-            page.description = f['description']
-            page.email = f['email']
-            page.sourcelink = f['sourcelink'] if f['sourcelink'] else None
-            page.languages = langs
-            page.publishemail = 'publishemail' in f
-            page.visible = 'visible' in f
-            db.session.add(page)
-            db.session.commit()
+            try:
+                f = request.form
+                langs = [LF.ids[i] for i in f.getlist('languages')]
+                page.title = f['title']
+                page.url = addslash(f['url'])
+                page.author = f['author']
+                page.description = f['description']
+                page.email = f['email']
+                page.sourcelink = f['sourcelink'] if f['sourcelink'] else None
+                page.languages = langs
+                page.publishemail = 'publishemail' in f
+                page.visible = 'visible' in f
+                db.session.add(page)
+                db.session.commit()
+            except sqlexc.IntegrityError:
+                return render_template('add-error.html', error='general', langs=LF.names, langids=LF.ids, header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
             return redirect('/acp/', 302)
         else:
             return render_template('add-edit.html', data=page, langs=LF.names, langids=LF.ids, header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
