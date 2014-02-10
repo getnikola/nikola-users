@@ -192,10 +192,10 @@ def checksite():
             except:
                 yield unknown.format('An unhandled exception occurred.')
 
-        #return render_template('checkresult.html', data=checkgenerator(request.form))
+        return render_template('checkresult.html', data=checkgenerator(request.form))
 
-        return Response(stream_template('checkresult.html',
-                                        data=checkgenerator(request.form)))
+        #return Response(stream_template('checkresult.html',
+                                        #data=list(checkgenerator(request.form)))
     else:
         return render_template('checksite.html')
 
