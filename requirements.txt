@@ -8,6 +8,7 @@ docopt==0.6.1
 gunicorn==18.0
 ipython==1.1.0
 itsdangerous==0.23
+lxml==3.3.0
 mandrill==1.0.53
 newrelic==2.10.0.8
 psycopg2==2.5.2

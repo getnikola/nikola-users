@@ -8,7 +8,8 @@ import datetime
 import random
 import mandrill
 import newrelic.agent
-from flask import Flask, render_template, request, flash, session, url_for, redirect, escape
+import requests
+from flask import Flask, render_template, request, flash, session, url_for, redirect, escape, Response
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import exc as sqlexc
 from sqlalchemy.dialects.postgresql import ARRAY
@@ -135,6 +136,68 @@ def index():
 @app.route('/tos/')
 def tos():
     return render_template('tos.html', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
+
+# Copied from:
+# http://flask.pocoo.org/docs/patterns/streaming/#streaming-from-templates
+def stream_template(template_name, **context):
+    app.update_template_context(context)
+    t = app.jinja_env.get_template(template_name)
+    rv = t.stream(context)
+    rv.enable_buffering(2) # would break our thing if we had more here
+    return rv
+
+@app.route('/check/', methods=['GET', 'POST'])
+def checksite():
+    if request.method == 'POST':
+        def checkgenerator(f):
+            homeurl = f['url']
+            yield '<p>Checking site: <strong>{0}</strong>.</p>'.format(homeurl)
+            burl = homeurl.split('index.html')[0]
+            if not burl.endswith('/'):
+                burl += '/'
+            if homeurl != burl:
+                yield '<p>Base determined as <strong>{0}</strong>.</p>'.format(
+                    burl)
+            rssurl = burl + 'rss.xml'
+            success = """
+            <p class="text-success">
+            <i class="glyphicon glyphicon-ok" style="font-size: 2em;"></i>
+            This is a Nikola site.</p>"""
+
+            failed = """
+            <p class="text-danger">
+            <i class="glyphicon glyphicon-remove" style="font-size: 2em;"></i>
+            This is not a Nikola site.</p>"""
+
+            unknown = """
+            <p class="text-warning">
+            <i class="glyphicon glyphicon-warning-sign" style="font-size: 2em;"></i>
+            The check has failed.  {0}</p>"""
+            try:
+                r = requests.get(rssurl)
+                nsite = False
+                patterns = ['<generator>Nikola</generator>', # v6.3.0
+                            '<generator>nikola</generator>'] # v6.2.1
+                for i in patterns:
+                    if i in r.text:
+                        nsite = True
+
+                if nsite:
+                    yield success
+                elif r.status_code not in ['200', '404']:
+                    yield unknown.format('HTTP {0} received.'.format(
+                        r.status_code))  # formatception!
+                else:
+                    yield failed
+            except:
+                yield unknown.format('An unhandled exception occurred.')
+
+        #return render_template('checkresult.html', data=checkgenerator(request.form))
+
+        return Response(stream_template('checkresult.html',
+                                        data=checkgenerator(request.form)))
+    else:
+        return render_template('checksite.html')
 
 @app.route('/add/', methods=['GET', 'POST'])
 def add():
