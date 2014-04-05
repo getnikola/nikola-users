@@ -92,7 +92,7 @@
     </div>
     <div class="form-group">
         <div class="col-lg-offset-2 col-lg-5">
-            {% if session.username %}
+            {% if session.get('is_admin') %}
             <label class="checkbox">
                 <input name="visible" type="checkbox" {% if data and
                 data.visible %}checked{% endif %}> Show this page.

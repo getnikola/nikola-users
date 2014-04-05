@@ -2,26 +2,6 @@
 {% set title = "Login" %}
 {% set show_cookies = True %}
 {% block content %}
-<p class="lead">In order to manage this site, you need to log in.</p>
-
-<form class="form-horizontal" method="POST" action="/login/">
-    <input type="hidden" name="act" value="in">
-    <div class="form-group">
-        <label class="control-label col-lg-2" for="inputUsername">Username</label>
-        <div class="col-lg-3">
-            <input type="text" class="form-control" id="inputUsername" name="username" placeholder="Username" required>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-lg-2" for="inputPassword">Password</label>
-        <div class="col-lg-3">
-            <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password" required>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-lg-offset-2 col-lg-3">
-            <button type="submit" class="btn btn-primary">Sign in</button>
-        </div>
-    </div>
-</form>
+<p class="lead">In order to manage this site, you need to log in with Persona —
+just cilck the button in the menu bar..</p>
 {% endblock %}

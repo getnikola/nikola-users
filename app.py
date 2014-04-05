@@ -2,14 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import os
-import hashlib
+import json
 import urlparse
 import datetime
 import random
 import mandrill
 import newrelic.agent
 import requests
-from flask import Flask, render_template, request, flash, session, url_for, redirect, escape, Response
+from flask import Flask, render_template, request, abort, flash, session, url_for, redirect, escape
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import exc as sqlexc
 from sqlalchemy.dialects.postgresql import ARRAY
@@ -30,6 +30,12 @@ try:
     MANDRILL = mandrill.Mandrill(os.environ['MANDRILL_APIKEY'])
 except KeyError:
     print('Mandrill unavailable')
+
+ADMIN_LIST = ['kwpolska@gmail.com',
+              'ralsina@kde.org',
+              'ralsina@netmanagers.com.ar',
+              'info@oquanta.info']
+
 db = SQLAlchemy(app)
 
 
@@ -82,23 +88,6 @@ class Page(db.Model):
             names += [i.name for i in _]
         return names
 
-class Admin(db.Model):
-    id = db.Column(db.Integer, db.Sequence('admin_id_seq'), primary_key=True, unique=True)
-    username = db.Column(db.String(80), unique=True)
-    email = db.Column(db.String(512), unique=True)
-    password = db.Column(db.String(128))
-
-    def __init__(self, username, email, password):
-        self.username = username
-        self.email = email
-        self.password = Admin.mkpwd(password)
-
-    def __repr__(self):
-        return '<Admin %r>' % self.username
-
-    @staticmethod
-    def mkpwd(password):
-        return hashlib.sha512(password.encode()).hexdigest()
 
 class Language(db.Model):
     id = db.Column(db.Integer, db.Sequence('language_id_seq'), primary_key=True, unique=True)
@@ -180,12 +169,12 @@ def checksite():
                             '<generator>Nikola <http://getnikola.com/></generator>', # v6.3.0
                             '<generator>nikola</generator>']                         # v6.2.1
                 for i in patterns:
-                    if i in r.text:
+                    if i in r.content:
                         nsite = True
 
                 if nsite:
                     yield success
-                elif r.status_code not in ['200', '404']:
+                elif r.status_code not in [200, 404]:
                     yield unknown.format('HTTP {0} received.'.format(
                         r.status_code))  # formatception!
                 else:
@@ -222,7 +211,7 @@ def add():
             db.session.commit()
         except:
             return render_template('add-error.html', error='general', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
-        if 'username' not in session:
+        if not session.get('is_admin'):
             mail_admin(p)
         return render_template('add-ack.html', p=p, header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
     else:
@@ -237,43 +226,66 @@ def remove():
     return render_template('edit-remove.html', action='remove', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
 
 @app.route('/login/', methods=['GET', 'POST'])
-def admin_login():
+def login():
+    # remove leftover stuff
+    if 'username' in session:
+        session.pop('username')
+
     if request.method == 'POST':
-        if request.form['act'] == 'in':
-            u = Admin.query.filter(Admin.username.ilike(
-                request.form['username'])).first()
-            if not u or Admin.mkpwd(request.form['password']) != u.password:
-                flash('Login failed.', category='error')
-                return render_template('login.html', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
-            else:
-                session['username'] = u.username
-                flash('Logged in!')
-        else:
-            session.pop('username')
-            flash('Goodbye.')
-        return redirect('/', 302)
+        if 'assertion' not in request.form:
+            abort(400)
+
+        assertion_info = {'assertion': request.form['assertion'],
+                          'audience': 'users.getnikola.com'} # window.location.host
+        resp = requests.post('https://verifier.login.persona.org/verify',
+                            data=assertion_info, verify=True)
+
+        if not resp.ok:
+            print(resp)
+            print(resp.content)
+            abort(500)
+
+        data = resp.json()
+
+        if data['status'] == 'okay':
+            session.update({'email': data['email']})
+            data['is_admin'] = data['email'] in ADMIN_LIST
+            session['is_admin'] = data['is_admin']
+            # TODO -- we should allow non-admins and let them do some things.
+            if not session['is_admin']:
+                session.pop('email')
+                session.pop('is_admin')
+                data['status'] = 'failure'
+                data['reason'] = 'Not an admin.'
+            return json.dumps(data)
     else:
-        if 'username' in session:
+        if 'email' in session:
             return redirect('/', 302)
         else:
             return render_template('login.html', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
 
-@app.route('/login/out/')
-def admin_logout():
-    session.pop('username')
-    flash('Goodbye.')
+@app.route('/logout/', methods=["POST"])
+def logout():
+    try:
+        session.pop('email')
+    except KeyError:
+        pass
+    try:
+        session.pop('is_admin')
+    except KeyError:
+        pass
     return redirect('/', 302)
 
 @app.route('/acp/')
 def admin_panel():
-    if 'username' not in session:
+    if not session.get('is_admin'):
         return render_template('accessdenied.html', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
     data = list(Page.query.order_by(Page.visible == True, Page.date))
     return render_template('acp/index.html', data=data, icons=LF.icons, header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
 
 @app.route('/acp/<slug>/', methods=['POST'])
 def admin_act(slug):
-    if 'username' not in session:
+    if not session.get('is_admin'):
         return render_template('accessdenied.html', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
     page = Page.query.filter_by(id=int(slug)).first()
     if 'toggle' in request.form:
@@ -309,64 +321,6 @@ def admin_act(slug):
             db.session.delete(page)
             db.session.commit()
         return redirect('/acp/', 302)
-
-@app.route('/login/passwd/change/', methods=['GET', 'POST'])
-def admin_change_passwd():
-    if 'username' not in session:
-        return render_template('accessdenied.html', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
-
-    if request.method == 'POST':
-        if request.form['password'] == request.form['confirm']:
-            u = Admin.query.filter(Admin.username.ilike(
-                session['username'])).first()
-
-            u.password = Admin.mkpwd(request.form['password'])
-            db.session.add(u)
-            db.session.commit()
-            session.pop('username')
-            flash('Your password has been changed.  For safety reasons, you need to log back in.')
-            return redirect('/login/', 302)
-        else:
-            flash('The passwords do not match.', category='error')
-            return render_template('changepasswd.html', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
-
-    else:
-        return render_template('changepasswd.html', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
-
-@app.route('/users/')
-def admin_users():
-    if 'username' not in session:
-        return render_template('accessdenied.html', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
-    data = Admin.query.all()
-    return render_template('acp/users.html', data=data, header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
-
-@app.route('/users/<id>/', methods=['POST'])
-def admin_user_edit(id):
-    if 'username' not in session:
-        return render_template('accessdenied.html', header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
-    f = request.form
-    if id == 'create':
-        a = Admin(f['username'], f['email'], f['password'])
-        db.session.add(a)
-        db.session.commit()
-    else:
-        a = Admin.query.filter_by(id=int(id)).first()
-        if 'del' in f:
-            if f['del'] == '1':
-                db.session.delete(a)
-                db.session.commit()
-        elif 'delete' in f:
-            return render_template('acp/userdel.html', user=a, header=newrelic.agent.get_browser_timing_header(), footer=newrelic.agent.get_browser_timing_footer())
-        else:
-            a.username = f['username']
-            a.email = f['email']
-            if f['password']:
-                a.password = Admin.mkpwd(f['password'])
-
-            db.session.add(a)
-            db.session.commit()
-
-    return redirect('/users/', 302)
 
 
 def mail_admin(page):
