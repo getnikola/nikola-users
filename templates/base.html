@@ -9,6 +9,7 @@
 {% endautoescape %}
 <link href="http://getnikola.com/assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
 <link rel="canonical" href="http://users.getnikola.com/">
+<link rel="shortcut icon" href="http://getnikola.com/favicon.ico">
 <!--[if lt IE 9]><script src="/assets/js/html5.js"></script><![endif]-->
 
 <style type="text/css">
@@ -146,11 +147,10 @@ footer {
         <ul class="nav navbar-nav navbar-right">
             <li><a href="/check/">Check sites</a></li>
             {% if session.get('email') %}
-            <li><a href="#">Howdy, {{ session.email }}</a></li>
             <li><a href="/acp/"><b>Manage</b></a></a></li>
-            <li><a href="#" id="signout">Sign out</a></li>
+            <li><a href="#" id="signout">Sign out [{{ session.email}}]</a></li>
             {% else %}
-            <li><a href="#" id="signin">Sign in</a></li>
+            <li><a href="#" id="signin">Sign in (admins only)</a></li>
             {% endif %}
         </ul>
             </div>
