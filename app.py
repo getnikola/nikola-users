@@ -38,11 +38,6 @@ ADMIN_LIST = ['kwpolska@gmail.com',
 
 db = SQLAlchemy(app)
 
-@app.after_request
-def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', 'http://getnikola.com/')
-    return response
-
 
 @app.template_filter('nl')
 def nlfilter(s):
