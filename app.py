@@ -179,8 +179,8 @@ def checksite():
                         r.status_code))  # formatception!
                 else:
                     yield failed
-            except:
-                yield unknown.format('An unhandled exception occurred.')
+            except Exception as e:
+                yield unknown.format('An unhandled exception occurred: ' + str(e))
 
         return render_template('checkresult.html', data=checkgenerator(request.form))
 
