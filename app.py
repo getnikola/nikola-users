@@ -150,17 +150,17 @@ def checksite():
             rssurl = burl + 'rss.xml'
             success = """
             <p class="text-success">
-            <i class="glyphicon glyphicon-ok" style="font-size: 2em;"></i>
+            <i class="fa fa-check" style="font-size: 2em;"></i>
             This is a Nikola site.</p>"""
 
             failed = """
             <p class="text-danger">
-            <i class="glyphicon glyphicon-remove" style="font-size: 2em;"></i>
+            <i class="fa fa-times" style="font-size: 2em;"></i>
             This is not a Nikola site.</p>"""
 
             unknown = """
             <p class="text-warning">
-            <i class="glyphicon glyphicon-warning-sign" style="font-size: 2em;"></i>
+            <i class="fa fa-warning" style="font-size: 2em;"></i>
             The check has failed.  {0}</p>"""
             try:
                 r = requests.get(rssurl)

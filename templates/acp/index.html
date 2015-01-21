@@ -24,12 +24,11 @@
             <td>{{ p.id|e }}</td>
             <td>{{ p.title|e }}</td>
             <td>{{ p.author|e }}</td>
-            <td><i class="glyphicon{% if p.publishemail %}glyphicon-eye-open{% else
-                    %}glyphicon-eye-close{% endif %}"></i> <a href="mailto:{{
+            <td><i class="fa fa-eye{% if not p.publishemail %}-slash{% endif %}"></i> <a href="mailto:{{
                     p.email|e }}">{{ p.email|e }}</a></td>
             <td><a href="{{ p.url|e }}">{{ p.url|e }}</a></td>
-            <td><i class="glyphicon {% if p.sourcelink %}glyphicon-ok{% else
-                    %}glyphicon-remove{% endif %}"></i></td>
+            <td><i class="fa {% if p.sourcelink %}fa-check{% else
+                    %}fa-times{% endif %}"></i></td>
             <td>
                 {% for i in p.languages %}
                 <img src="/public/icons/{{ icons[i] }}.png">
@@ -40,14 +39,14 @@
                     <div class="btn-group">
                     <button type="submit" name="toggle" class="btn btn-xs
                         {% if p.visible %}btn-info{% else %}btn-success{% endif %}">
-                        <i class="glyphicon glyphicon-eye-{% if p.visible %}close{% else %}open{% endif %}"></i>
+                        <i class="fa fa-eye{% if p.visible %}-slash{% endif %}"></i>
                     </button>
                     <button type="submit" name="edit" class="btn btn-xs
                         btn-primary">
-                        <i class="glyphicon glyphicon-edit"></i>
+                        <i class="fa fa-pencil"></i>
                     </button>
                     <button type="submit" name="delete" class="btn btn-xs btn-danger">
-                        <i class="glyphicon glyphicon-trash"></i>
+                        <i class="fa fa-trash"></i>
                     </button>
                 </div>
                 </form>
