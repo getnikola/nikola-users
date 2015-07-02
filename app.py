@@ -1,15 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
+import newrelic.agent
+newrelic.agent.initialize('/srv/nikola-users/newrelic.ini')
+
 import os
 import json
 import urlparse
 import datetime
 import random
 import mandrill
-import newrelic.agent
 import requests
-from flask import Flask, render_template, request, abort, flash, session, url_for, redirect, escape
+from flask import Flask, render_template, request, abort, session, url_for, redirect, escape
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import exc as sqlexc
 from sqlalchemy.dialects.postgresql import ARRAY
