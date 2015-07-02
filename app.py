@@ -168,7 +168,8 @@ def checksite():
             try:
                 r = requests.get(rssurl)
                 nsite = False
-                patterns = ['<generator>http://getnikola.com/</generator>',          # v7.0.0
+                patterns = ['<generator>https://getnikola.com/</generator>',         # v7.6.1
+                            '<generator>http://getnikola.com/</generator>',          # v7.0.0
                             '<generator>Nikola <http://getnikola.com/></generator>', # v6.3.0
                             '<generator>nikola</generator>']                         # v6.2.1
                 for i in patterns:
