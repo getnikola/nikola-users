@@ -6,6 +6,10 @@
 {{ len(data) }} Sites
 {% endblock %}
 {% block content %}
+<p class="text" style="font-size: 14px; margin-left: 15px;">
+    Below is a selection of the many websites made by users of Nikola. Visit a
+    few sites and see some of what is possible to achieve with Nikola.
+</p>
 <div class="well well-sm" style="margin: 0 20px 20px 20px; font-size:
     14px;">
     Fancy seeing your site here?  Or the other way around?  Is
@@ -59,7 +63,7 @@
         <div class="thumbnail">
             {% if item.sourcelink != None %}
                 <a href="{{ item.sourcelink|e }}" class="btn btn-sm
-                    btn-primary">Source</a>
+                    btn-primary" rel="nofollow">Source</a>
             {% else %}
                 <a href="#" class="btn btn-primary btn-sm disabled"
                     style="visibility: hidden;">Source</a>
@@ -75,8 +79,8 @@
             </span>
 
             <div class="caption" style="margin: 0; clear: both;">
-                <h4 style="margin: 0; margin-top: -40px;"><a href="{{ item.url|e }}">{{
-                        item.title|e }}</a><br>
+                <h4 style="margin: 0; margin-top: -40px;"><a href="{{ item.url|e }}"
+                        rel="nofollow">{{ item.title|e }}</a><br>
                     <small>by {% if item.publishemail %}<a href="mailto:{{
                             item.email|e }}">{% endif %}{{ item.author|e }}{% if
                             item.publishemail %}</a>{% endif %}
