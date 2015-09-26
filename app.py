@@ -37,7 +37,8 @@ except KeyError:
 ADMIN_LIST = ['kwpolska@gmail.com',
               'ralsina@kde.org',
               'ralsina@netmanagers.com.ar',
-              'info@oquanta.info']
+              'info@oquanta.info',
+              'daniel@daniel.priv.no']
 
 db = SQLAlchemy(app)
 
