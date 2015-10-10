@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<p>
+In order to {{ page }} your site’s entry, simply send an e-mail to <a
+    href="mailto:users@getnikola.com">users@getnikola.com</a>
+— preferably using the same e-mail address you did when you requested
+addition.  {% if page == "remove" %}Including a reason is recommended.{% endif %}
+</p>
+
+<p>We require using e-mail, because someone might make a fraudulent request.
+    Sorry for the inconvenience.</p>
+{% endblock %}

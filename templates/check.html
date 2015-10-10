@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<form class="form-horizontal" method="POST" action="">
+    {% csrf_token %}
+    <div class="form-group">
+        <label class="control-label col-lg-2" for="inputURL">URL</label>
+        <div class="col-lg-5">
+            <input type="url" class="form-control" name="url" id="inputURL" placeholder="URL" maxlength="256" required>
+            <span class="help-block">URL of the site to check.</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-lg-offset-2 col-lg-5">
+            <button type="submit" class="btn btn-primary">Check this site</button>
+        </div>
+    </div>
+</form>
+{% if data %}
+<h2>Results</tt></h2>
+{% for i in data %}
+{{ i }}
+{% endfor %}
+{% endif %}
+{% endblock %}

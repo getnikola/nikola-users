@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<p class="text-danger lead">Something went wrong.</p>
+{% if reason == 'tos' %}
+<p class="text-danger">You did not accept the Terms of Service.</p>
+{% elif reason == 'duplicate' %}
+<p class="text-danger">There is an entry for this page already — you should <a href="/edit/">request an edit</a>.</p>
+{% else %}
+<p class="text-danger">Possible causes include:</p>
+
+<ul>
+    <li><p class="text-danger">This page already exists in our database (and you
+        should <a href="/edit/">request an edit</a>)</p></li>
+    <li><p class="text-danger">Some fields were empty</p></li>
+    <li><p class="text-danger">Some fields were too long</p></li>
+    <li><p class="text-danger">Some fields were missing</p></li>
+</ul>
+<p>Error list:</p>
+{{ reason }}
+{% endif %}
+
+<p>Please press the Back button and fix those problems.</p>
+{% endblock %}
