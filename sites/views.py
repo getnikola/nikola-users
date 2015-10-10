@@ -1,12 +1,15 @@
 import itertools
 from django.shortcuts import render
 from django.core.mail import send_mail
+from django.utils.html import format_html
+from django.http import HttpResponseNotFound
 from .models import Site, Language
 from .checker import gencheck, CHECK_ERROR_NODATA
 from .forms import AddForm, CheckForm
 
 MENU = (
     ('/', 'Users Home', 'home'),
+    ('/lang/', 'Languages', 'lang'),
     ('/add/', 'Add', 'add'),
     ('/edit/', 'Edit', 'edit'),
     ('/remove/', 'Remove', 'remove'),
@@ -15,23 +18,64 @@ MENU = (
 )
 
 
-def index(request):
-    """Index view."""
-    featured = Site.objects.filter(featured=True).order_by('featured_order')
-    other = Site.objects.filter(featured=False).order_by('?')  # random order
-    count = Site.objects.count()
+def generic_index(request, title='{0} Sites', page='home', objects=None):
+    """Generic index view."""
+    featured = objects.filter(featured=True).order_by('featured_order')
+    other = objects.filter(featured=False).order_by('?')  # random order
+    count = objects.count()
 
     all_sites = itertools.chain(featured, other)
 
     context = {
         'sites': all_sites,
         'count': count,
-        'title': '{0} Sites'.format(count),
+        'title': title.format(count),
         'menu': MENU,
-        'page': 'home'
+        'page': page
     }
-
     return render(request, 'index.html', context)
+
+
+def index(request):
+    """Language index view."""
+    objects = Site.objects
+    return generic_index(request, objects=objects)
+
+
+def lang(request, **filters):
+    l = Language.objects.filter(**filters)
+    if not l:
+        return HttpResponseNotFound()
+    elif len(l) == 1:
+        lnames = str(l[0])
+        objects = l[0].site_set
+    else:
+        lnames = ', '.join(str(_) for _ in l)
+        objects = Site.objects.filter(languages__language_code=filters['language_code'])
+    return generic_index(request, title="{{0}} Sites in {0}".format(lnames), page='lang', objects=objects)
+
+
+def langlist(request):
+    group_members = list(Language.objects.filter(display_country=True))
+    groups = {}
+    for l in group_members:
+        if l.language_code in groups:
+            groups[l.language_code].append(l)
+        else:
+            groups[l.language_code] = [l]
+
+    groups_s = {}
+    for lc, ll in groups.items():
+        groups_s[lc] = format_html('<strong>{0}</strong>: {1}', lc, ', '.join(str(i) for i in ll))
+
+    context = {
+        'languages': Language.objects.order_by('name'),
+        'language_groups': groups_s,
+        'title': 'Languages',
+        'menu': MENU,
+        'page': 'lang'
+    }
+    return render(request, 'languages.html', context)
 
 
 def add(request):
