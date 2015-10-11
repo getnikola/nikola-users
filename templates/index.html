@@ -28,7 +28,7 @@ fully described yet.  We apologize for the inconvenience.</p>
                         {% endif %}
                         <p class="langline">
                             {% for lang in site.languages.all %}
-                            <span class="pagelang" title="{{ lang.name }}">{{ lang.code }}</span>
+                            <a href="/lang/{{ lang.code }}/" class="pagelang" title="{{ lang.name }}">{{ lang.code }}</a>
                             {% empty %}
                             <span class="pagelang pagelang-unknown" title="Unknown">??</span>
                             {% endfor %}
