@@ -1,5 +1,5 @@
 ===============================
-Some Sites Using Nikola, v3.0.2
+Some Sites Using Nikola, v3.0.3
 ===============================
 
 A very fancy Django app to manage the Some Sites Using Nikola site.
