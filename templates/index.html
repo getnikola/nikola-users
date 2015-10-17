@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-{% if page == 'index' %}
+{% if page == 'home' %}
 <p>
     Below is a selection of the many websites made by users of Nikola. Visit a
     few sites and see some of what is possible to achieve with Nikola.
@@ -8,9 +8,6 @@
 <p>
     If you have made your own Nikola site, you can <a href="/add/">add it to the index</a>.
 </p>
-<p class="text-muted"><strong>Notice:</strong>
-Many sites are not
-fully described yet.  We apologize for the inconvenience.  (but we’re working on it!)</p>
 {% endif %}
 
 {% if count == 0 %}
@@ -38,7 +35,7 @@ fully described yet.  We apologize for the inconvenience.  (but we’re working 
             </header>
             {{ site.description_formatted }}
             {% if site.featured_reason %}
-            <footer class="featured-reason">
+            <footer class="text-muted featured-reason">
                 {{ site.featured_reason }}
             </footer>
             {% endif %}
