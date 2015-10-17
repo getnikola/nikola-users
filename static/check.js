@@ -40,8 +40,7 @@ $(document).ready(function() {
             link = prepare_link_for_checking(link);
         }
         // Dear W3C: fuck you.
-        //$.getJSON('https://users.getnikola.com/api/check?url=' + encodeURIComponent(link), function(out) {
-        $.getJSON('http://127.0.0.1:8000/api/check?url=' + encodeURIComponent(link), function(out) {
+        $.getJSON('https://users.getnikola.com/api/check?url=' + encodeURIComponent(link), function(out) {
             if (out.type === "result") {
                 result = out.data;
                 if (result === -1) {
