@@ -2,10 +2,10 @@ import itertools
 from django.shortcuts import render
 from django.core.mail import send_mail
 from django.utils.html import format_html
-from django.http import HttpResponseNotFound
+from django.http import JsonResponse, HttpResponseNotFound
 from .models import Site, Language
-from .checker import gencheck, CHECK_ERROR_NODATA
-from .forms import AddForm, CheckForm
+from .checker import gencheck
+from .forms import AddForm
 
 MENU = (
     ('/', 'Users Home', 'home'),
@@ -162,18 +162,17 @@ def check(request):
         'menu': MENU,
         'title': 'Check a Site',
         'page': 'check',
-        'data': [],
     }
 
-    if request.method == 'POST':
-        form = CheckForm(request.POST)
-        if form.is_valid():
-            context['data'] = gencheck(form.cleaned_data['url'])
-            context['url'] = form.cleaned_data['url']
-        else:
-            context['data'] = CHECK_ERROR_NODATA
-
     return render(request, 'check.html', context)
+
+
+def api_check(request):
+    """Check API."""
+    if 'url' in request.GET:
+        return JsonResponse(gencheck(request.GET['url']))
+    else:
+        return JsonResponse({"type": "error", "data": "No URL specified. Please remember this is not a random web proxy."})
 
 
 def tos(request):

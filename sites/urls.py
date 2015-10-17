@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^edit/?$', views.edit, name='edit'),
     url(r'^remove/?$', views.remove, name='remove'),
     url(r'^check/?$', views.check, name='check'),
+    url(r'^api/check$', views.api_check, name='api_check'),
     url(r'^tos/?$', views.tos, name='tos'),
     url(r'^lang/?$', views.langlist, name='langlist'),
     url(r'^lang/(?P<language_code>[a-z]{2,5})/?$', views.lang, name='lang'),
