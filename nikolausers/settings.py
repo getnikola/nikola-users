@@ -27,9 +27,8 @@ DEBUG = os.environ['DEBUG'] == '1'
 
 ALLOWED_HOSTS = ['*']
 
-MANDRILL_API_KEY = os.environ['MANDRILL_APIKEY']
-EMAIL_BACKEND = "djrill.mail.backends.djrill.DjrillBackend"
-DEFAULT_FROM_EMAIL = "users@getnikola.com"
+EMAIL_HOST = 'localhost'
+DEFAULT_FROM_EMAIL = "nikola-users@chriswarrick.com"
 import newrelic.agent
 newrelic.agent.initialize()
 

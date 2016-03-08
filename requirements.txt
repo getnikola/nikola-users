@@ -1,6 +1,4 @@
 Django==1.8.7
-djrill==2.0
-mandrill==1.0.57
 newrelic==2.58.2.45
 psycopg2==2.6.1
 pytz==2015.7
