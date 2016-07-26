@@ -2,7 +2,7 @@ from django import forms
 from .models import Language
 
 def make_choices():
-    return [(l.code, l.name) for l in Language.objects.all()]
+    return [(l.code, l.name) for l in Language.objects.all().order_by('name')]
 
 class AddForm(forms.Form):
     title = forms.CharField(label="Title", max_length=100)

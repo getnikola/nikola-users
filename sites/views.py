@@ -4,7 +4,6 @@ from django.core.mail import send_mail
 from django.utils.html import format_html
 from django.http import JsonResponse, HttpResponseNotFound
 from .models import Site, Language
-from .checker import gencheck
 from .forms import AddForm
 
 MENU = (
@@ -56,7 +55,7 @@ def lang(request, **filters):
 
 
 def langlist(request):
-    group_members = list(Language.objects.filter(display_country=True))
+    group_members = list(Language.objects.filter(display_country=True).order_by('name'))
     groups = {}
     for l in group_members:
         if l.language_code in groups:
@@ -169,10 +168,7 @@ def check(request):
 
 def api_check(request):
     """Check API."""
-    if 'url' in request.GET:
-        return JsonResponse(gencheck(request.GET['url']))
-    else:
-        return JsonResponse({"type": "error", "data": "No URL specified. Please remember this is not a random web proxy."})
+    return JsonResponse({"type": "error", "data": "This service has been disabled. Please see https://users.getnikola.com/ for a helper script."})
 
 
 def tos(request):
