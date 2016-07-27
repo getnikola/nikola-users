@@ -113,26 +113,22 @@ STATICFILES_DIRS = []
 STATIC_URL = '/static/'
 STATIC_ROOT = '/srv/users.getnikola.com/static'
 
-
+# Logging
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.environ['DJANGO_LOG_PATH'],
         },
     },
     'loggers': {
-        'django.request': {
-            'handlers': ['console'],
+        '': {
+            'handlers': ['file'],
             'level': 'DEBUG',
-            'propagate': True,
-        },
-        'django': {
-            'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
             'propagate': True,
         },
     },
 }
-
