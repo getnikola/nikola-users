@@ -130,5 +130,9 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
+        'newrelic': {
+            'handlers': [],
+            'propagate': False,
+        }
     },
 }
