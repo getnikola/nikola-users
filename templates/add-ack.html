@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 <p class="text-success lead">Request sent!</p>
-
+{% if email_succeeded %}
 <p>Administrators were informed of your request.  Your site will be added within 48 hours.</p>
+{% else %}
+<p class="text-warning">WARNING: Administrators were not informed of your request because sending e-mail failed. Please report this to <a href="https://getnikola.com/contact.html">the Nikola team</a> (preferably on Twitter, or personally to Chris through e-mail)</p>
+{% endif %}
 
 <p>The administrators reserve the right to alter the information, or reject your site altogether.</p>
 
