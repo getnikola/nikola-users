@@ -29,8 +29,6 @@ ALLOWED_HOSTS = ['*']
 
 EMAIL_HOST = 'localhost'
 DEFAULT_FROM_EMAIL = "nikola-users@chriswarrick.com"
-import newrelic.agent
-newrelic.agent.initialize()
 
 # Application definition
 
@@ -42,7 +40,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'sites',
-    'newrelic.extras.framework_django',
 )
 
 MIDDLEWARE = [
@@ -129,9 +126,5 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
-        'newrelic': {
-            'handlers': [],
-            'propagate': False,
-        }
     },
 }
