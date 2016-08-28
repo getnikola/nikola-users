@@ -122,7 +122,8 @@ def add(request):
             try:
                 send_mail(
                     "Nikola Users addition request for {0}".format(site.url),
-                    '{0} <{1}> has requested addition of "{2}" <{3}> to the Nikola Users site.\nPlease visit the admin panel to accept or reject it: https://users.getnikola.com/admin/'.format(
+                    '{0} <{1}> has requested addition of "{2}" <{3}> to the Nikola Users site.\n'
+                    'Please visit the admin panel to accept or reject it: https://users.getnikola.com/admin/'.format(
                         site.author, site.email, site.title, site.url),
                     'nikola-users@chriswarrick.com', ['users@getnikola.com'], fail_silently=False)
                 context['email_succeeded'] = True
