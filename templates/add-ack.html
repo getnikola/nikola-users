@@ -4,7 +4,7 @@
 {% if email_succeeded %}
 <p>Administrators were informed of your request.  Your site will be added within 48 hours.</p>
 {% else %}
-<p class="text-warning">WARNING: Administrators were not informed of your request because sending e-mail failed. Please report this to <a href="https://getnikola.com/contact.html">the Nikola team</a> (preferably on Twitter, or personally to Chris through e-mail)</p>
+<p class="text-warning">WARNING: Administrators were not informed of your request because sending e-mail failed. Please report this to <a href="https://getnikola.com/contact.html">the Nikola team</a> (preferably on Twitter, or personally to Chris Warrick through e-mail)</p>
 {% endif %}
 
 <p>The administrators reserve the right to alter the information, or reject your site altogether.</p>
@@ -15,10 +15,6 @@
     <dd>{{ site.title }}</dd>
     <dt>Author</dt>
     <dd>{{ site.author }}</dd>
-    <dt>Email</dt>
-    <dd>{{ site.email }}</dd>
-    <dt>Publish email</dt>
-    <dd>{% if site.publish_email %}yes{% else %}no{% endif %}</dd>
     <dt>URL</dt>
     <dd>{{ site.clickable_url }}</dd>
     <dt>Description</dt>

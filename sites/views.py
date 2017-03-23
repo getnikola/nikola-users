@@ -101,10 +101,8 @@ def add(request):
             site.title = form.cleaned_data['title']
             site.url = form.cleaned_data['url']
             site.author = form.cleaned_data['author']
-            site.email = form.cleaned_data['email']
             site.description = form.cleaned_data['description']
             site.sourcelink = form.cleaned_data['sourcelink']
-            site.publish_email = form.cleaned_data['publish_email']
             site.save()
             for lang in form.cleaned_data['languages']:
                 try:
@@ -122,9 +120,9 @@ def add(request):
             try:
                 send_mail(
                     "Nikola Users addition request for {0}".format(site.url),
-                    '{0} <{1}> has requested addition of "{2}" <{3}> to the Nikola Users site.\n'
+                    '{0} has requested addition of "{1}" <{2}> to the Nikola Users site.\n'
                     'Please visit the admin panel to accept or reject it: https://users.getnikola.com/admin/'.format(
-                        site.author, site.email, site.title, site.url),
+                        site.author, site.title, site.url),
                     'nikola-users@chriswarrick.com', ['nikola-users@chriswarrick.com'], fail_silently=False)
                 context['email_succeeded'] = True
             except Exception:

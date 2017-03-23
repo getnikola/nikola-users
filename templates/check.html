@@ -1,24 +1,45 @@
 {% extends "base.html" %}
 {% block content %}
 <div>
-<p>This feature has been disabled. If you want to test a site, use the following Python program:</p>
-<pre class="code python"><a name="rest_code_871104a093764d779132a78f4d157c8d-1"></a><span class="kn">import</span> <span class="nn">requests</span>
-<a name="rest_code_871104a093764d779132a78f4d157c8d-2"></a>
-<a name="rest_code_871104a093764d779132a78f4d157c8d-3"></a><span class="n">url</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">"URL to check: "</span><span class="p">)</span>
-<a name="rest_code_871104a093764d779132a78f4d157c8d-4"></a><span class="k">if</span> <span class="ow">not</span> <span class="n">url</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">'/rss.xml'</span><span class="p">):</span>
-<a name="rest_code_871104a093764d779132a78f4d157c8d-5"></a>    <span class="n">url</span> <span class="o">+=</span> <span class="s2">"/rss.xml"</span>
-<a name="rest_code_871104a093764d779132a78f4d157c8d-6"></a><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<a name="rest_code_871104a093764d779132a78f4d157c8d-7"></a><span class="n">patterns</span> <span class="o">=</span> <span class="p">[(</span><span class="n">b</span><span class="s1">'&lt;generator&gt;https://getnikola.com/&lt;/generator&gt;'</span><span class="p">,</span> <span class="s1">'Nikola v7.6.1+'</span><span class="p">),</span>
-<a name="rest_code_871104a093764d779132a78f4d157c8d-8"></a>            <span class="p">(</span><span class="n">b</span><span class="s1">'&lt;generator&gt;http://getnikola.com/&lt;/generator&gt;'</span><span class="p">,</span> <span class="s1">'Nikola v7.0.0-v7.6.0'</span><span class="p">),</span>
-<a name="rest_code_871104a093764d779132a78f4d157c8d-9"></a>            <span class="p">(</span><span class="n">b</span><span class="s1">'&lt;generator&gt;Nikola &lt;http://getnikola.com/&gt;&lt;/generator&gt;'</span><span class="p">,</span> <span class="s1">'Nikola v6.3.0-v6.4.0'</span><span class="p">),</span>
-<a name="rest_code_871104a093764d779132a78f4d157c8d-10"></a>            <span class="p">(</span><span class="n">b</span><span class="s1">'&lt;generator&gt;nikola&lt;/generator&gt;'</span><span class="p">,</span> <span class="s1">'Nikola v6.2.1 or older'</span><span class="p">]</span>
-<a name="rest_code_871104a093764d779132a78f4d157c8d-11"></a><span class="n">result</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-<a name="rest_code_871104a093764d779132a78f4d157c8d-12"></a><span class="k">for</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">description</span> <span class="ow">in</span> <span class="n">patterns</span><span class="p">:</span>
-<a name="rest_code_871104a093764d779132a78f4d157c8d-13"></a>    <span class="k">if</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">:</span>
-<a name="rest_code_871104a093764d779132a78f4d157c8d-14"></a>        <span class="k">print</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
-<a name="rest_code_871104a093764d779132a78f4d157c8d-15"></a>        <span class="nb">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<a name="rest_code_871104a093764d779132a78f4d157c8d-16"></a><span class="k">print</span><span class="p">(</span><span class="s2">"Not a Nikola site"</span><span class="p">)</span>
-<a name="rest_code_871104a093764d779132a78f4d157c8d-17"></a><span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</pre>
+<p>This feature has been disabled. If you want to test a site, use the following Python script:</p>
+<table class="codetable"><tr>
+<td class="linenos"><div class="linenodiv"><pre><a href="#listingscheckerpy-1"> 1</a>
+<a href="#listingscheckerpy-2"> 2</a>
+<a href="#listingscheckerpy-3"> 3</a>
+<a href="#listingscheckerpy-4"> 4</a>
+<a href="#listingscheckerpy-5"> 5</a>
+<a href="#listingscheckerpy-6"> 6</a>
+<a href="#listingscheckerpy-7"> 7</a>
+<a href="#listingscheckerpy-8"> 8</a>
+<a href="#listingscheckerpy-9"> 9</a>
+<a href="#listingscheckerpy-10">10</a>
+<a href="#listingscheckerpy-11">11</a>
+<a href="#listingscheckerpy-12">12</a>
+<a href="#listingscheckerpy-13">13</a>
+<a href="#listingscheckerpy-14">14</a>
+<a href="#listingscheckerpy-15">15</a>
+<a href="#listingscheckerpy-16">16</a>
+<a href="#listingscheckerpy-17">17</a>
+<a href="#listingscheckerpy-18">18</a></pre></div></td>
+<td class="code"><pre class="code literal-block"><a name="listingscheckerpy-1"></a><span class="kn">import</span> <span class="nn">requests</span>
+<a name="listingscheckerpy-2"></a>
+<a name="listingscheckerpy-3"></a><span class="n">url</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">"URL to check: "</span><span class="p">)</span>
+<a name="listingscheckerpy-4"></a><span class="k">if</span> <span class="ow">not</span> <span class="n">url</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">'/rss.xml'</span><span class="p">):</span>
+<a name="listingscheckerpy-5"></a>    <span class="n">url</span> <span class="o">+=</span> <span class="s2">"/rss.xml"</span>
+<a name="listingscheckerpy-6"></a><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<a name="listingscheckerpy-7"></a><span class="n">patterns</span> <span class="o">=</span> <span class="p">[(</span><span class="sa">b</span><span class="s1">'&lt;generator&gt;https://getnikola.com/&lt;/generator&gt;'</span><span class="p">,</span> <span class="s1">'Nikola v7.8.2+'</span><span class="p">),</span>
+<a name="listingscheckerpy-8"></a>            <span class="p">(</span><span class="sa">b</span><span class="s1">'&lt;generator&gt;https://getnikola.com/&lt;/generator&gt;'</span><span class="p">,</span> <span class="s1">'Nikola v7.6.1-v7.8.1'</span><span class="p">),</span>
+<a name="listingscheckerpy-9"></a>            <span class="p">(</span><span class="sa">b</span><span class="s1">'&lt;generator&gt;http://getnikola.com/&lt;/generator&gt;'</span><span class="p">,</span> <span class="s1">'Nikola v7.0.0-v7.6.0'</span><span class="p">),</span>
+<a name="listingscheckerpy-10"></a>            <span class="p">(</span><span class="sa">b</span><span class="s1">'&lt;generator&gt;Nikola &lt;http://getnikola.com/&gt;&lt;/generator&gt;'</span><span class="p">,</span> <span class="s1">'Nikola v6.3.0-v6.4.0'</span><span class="p">),</span>
+<a name="listingscheckerpy-11"></a>            <span class="p">(</span><span class="sa">b</span><span class="s1">'&lt;generator&gt;nikola&lt;/generator&gt;'</span><span class="p">,</span> <span class="s1">'Nikola v6.2.1 or older'</span><span class="p">)]</span>
+<a name="listingscheckerpy-12"></a><span class="n">result</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<a name="listingscheckerpy-13"></a><span class="k">for</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">description</span> <span class="ow">in</span> <span class="n">patterns</span><span class="p">:</span>
+<a name="listingscheckerpy-14"></a>    <span class="k">if</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">:</span>
+<a name="listingscheckerpy-15"></a>        <span class="k">print</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+<a name="listingscheckerpy-16"></a>        <span class="nb">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<a name="listingscheckerpy-17"></a><span class="k">print</span><span class="p">(</span><span class="s2">"Not a Nikola site"</span><span class="p">)</span>
+<a name="listingscheckerpy-18"></a><span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></td>
+</tr></table>
 </div>
 {% endblock %}
