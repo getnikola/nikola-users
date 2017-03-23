@@ -13,7 +13,3 @@ class AddForm(forms.Form):
     sourcelink = forms.URLField(label="Site source", max_length=512, required=False)
     languages = forms.MultipleChoiceField(label="Languages", required=False, choices=make_choices)
     tos = forms.BooleanField(label="Accept TOS")
-
-
-class CheckForm(forms.Form):
-    url = forms.URLField(label="URL to check", max_length=256)
