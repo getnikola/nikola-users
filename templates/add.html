@@ -3,7 +3,7 @@
 
 <form class="form-horizontal" method="POST" action="">
     {% csrf_token %}
-    <div class="form-group">
+    <div class="form-group form-row">
         <label class="control-label col-lg-2" for="inputTitle">Title</label>
         <div class="col-lg-10">
             <input type="text" class="form-control" name="title" id="inputTitle" placeholder="Title"
@@ -11,7 +11,7 @@
             <span class="help-block">Should be the same as <tt>BLOG_TITLE</tt>.</span>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group form-row">
         <label class="control-label col-lg-2" for="inputAuthor">Author</label>
         <div class="col-lg-10">
             <input type="text" class="form-control" name="author" id="inputAuthor" placeholder="Author"
@@ -20,14 +20,14 @@
                 boat.</span>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group form-row">
         <label class="control-label col-lg-2" for="inputURL">URL</label>
         <div class="col-lg-10">
             <input type="url" class="form-control" name="url" id="inputURL" placeholder="URL" required maxlength="512">
             <span class="help-block">Should be the same as <tt>SITE_URL</tt>.</span>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group form-row">
         <label class="control-label col-lg-2" for="inputDescription">Description</label>
         <div class="col-lg-10">
             <textarea name="description" class="form-control" id="inputDescription" placeholder="Description"
@@ -36,7 +36,7 @@
                 generous!)</span>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group form-row">
         <label class="control-label col-lg-2" for="inputSource">Site source</label>
         <div class="col-lg-10">
             <input type="url" class="form-control" name="sourcelink" id="inputSource"
@@ -44,7 +44,7 @@
             <span class="help-block">Link to your site source on GitHub (if any)</span>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group form-row">
         <label class="control-label col-lg-2" for="selectLanguages">Languages</label>
         <div class="col-lg-10">
             <select multiple name="languages" id="selectLanguages" class="form-control">
@@ -60,7 +60,7 @@
                 an Issue on GitHub</a>.</p>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group form-row">
         <div class="offset-lg-10 col-lg-10">
             <label class="checkbox">
                 <input name="tos" type="checkbox" required> I agree to the <a href="/tos/">Terms of Service and Privacy Policy</a>.
