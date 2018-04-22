@@ -2,87 +2,89 @@
 {% block content %}
 {% if page == 'home' %}
 <p>
-    Below is a selection of the many websites made by users of Nikola. Visit a
-    few sites and see some of what is possible to achieve with Nikola.
+Below is a selection of the many websites made by users of Nikola. Visit a
+few sites and see some of what is possible to achieve with Nikola.
 </p>
 <p>
-    If you have made your own Nikola site, you can <a href="/add/">add it to the index</a>.
+If you have made your own Nikola site, you can <a href="/add/">add it to the index</a>.
 </p>
 {% endif %}
 
 {% if count == 0 %}
-    <p class="text-error">No pages found…</p>
+<p class="text-error">No pages found…</p>
 {% else %}
-    <div class="row pages-line list-unstyled">
-        {% for site in sites %}
-        <div class="col-md-3 thumbnail{% if site.featured %} featured{% endif %}">
-            <header class="caption" style="margin: 0; clear: both;">
-                <h4 class="pagelink">{{ site.link }}<br>
-                    <small class="metadata">
-                        <p class="byline author vcard">by {{ site.author }}</p>
-                        {% if site.sourcelink %}
-                        <p class="sourceline">{{ site.clickable_sourcelink }}</p>
-                        {% endif %}
-                        <p class="langline">
+<div class="row pages-line">
+    {% for site in sites %}
+    <div class="col-md-3"><div class="card {% if site.featured %} featured bg-light{% endif %}">
+            <div class="card-body">
+                <header style="margin: 0; clear: both;">
+                    <h4 class="pagelink">{{ site.link }}<br>
+                        <small class="metadata">
+                            <p class="byline author vcard">by {{ site.author }}</p>
+                            {% if site.sourcelink %}
+                            <p class="sourceline">{{ site.clickable_sourcelink }}</p>
+                            {% endif %}
+                            <p class="langline">
                             {% for lang in site.languages.all %}
                             <a href="/lang/{{ lang.code }}/" class="pagelang" title="{{ lang.name }}">{{ lang.code }}</a>
                             {% empty %}
                             <span class="pagelang pagelang-unknown" title="Unknown">??</span>
                             {% endfor %}
-                        </p>
-                    </small>
-                </h4>
-            </header>
-            {{ site.description_formatted }}
-            {% if site.featured_reason %}
-            <footer class="text-muted featured-reason">
-                {{ site.featured_reason }}
-            </footer>
-            {% endif %}
-        </div>
-        {% if forloop.counter|divisibleby:"4" %}
-    </div><div class="row pages-line unstyled">
-        {% endif %}
-        {% endfor %}
-    </div>
+                            </p>
+                        </small>
+                    </h4>
+                </header>
+                {{ site.description_formatted }}
+                {% if site.featured_reason %}
+                <footer class="text-muted featured-reason">
+                    {{ site.featured_reason }}
+                </footer>
+                {% endif %}
+            </div></div></div>
+            {% if forloop.counter|divisibleby:"4" %}
+</div><div class="row pages-line">
+    {% endif %}
+    {% endfor %}
+</div>
 
-    <!-- Other Sites -->
-    <div class="row pages-line list-unstyled">
-        {% for site in other_sites %}
-        <div class="col-md-3 thumbnail">
-
-            <div class="caption" style="margin: 0; clear: both;">
-                <h4 class="pagelink">{{ site.link }}<br>
-                    <small class="metadata">
-                        <p class="byline author vcard">by {{ site.author }}</p>
-                        {% if site.sourcelink %}
-                        <p class="sourceline">{{ site.clickable_sourcelink }}</p>
-                        {% endif %}
-                        <p class="langline">
+<!-- Other Sites -->
+<div class="row pages-line">
+    {% for site in other_sites %}
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <header style="margin: 0; clear: both;">
+                    <h4 class="pagelink">{{ site.link }}<br>
+                        <small class="metadata">
+                            <p class="byline author vcard">by {{ site.author }}</p>
+                            {% if site.sourcelink %}
+                            <p class="sourceline">{{ site.clickable_sourcelink }}</p>
+                            {% endif %}
+                            <p class="langline">
                             {% for lang in site.languages.all %}
                             <span class="pagelang" title="{{ lang.name }}">{{ lang.code }}</span>
                             {% empty %}
                             <span class="pagelang pagelang-unknown" title="Unknown">??</span>
                             {% endfor %}
-                        </p>
-                    </small>
-                </h4>
-            </div>
-            {{ site.description }}
-        </div>
-        {% if forloop.counter|divisibleby:"4" %}
-    </div><div class="row pages-line unstyled">
-        {% endif %}
-        {% endfor %}
-    </div>
+                            </p>
+                        </small>
+                    </h4>
+                </header>
+                {{ site.description }}
+            </div></div></div>
+            {% if forloop.counter|divisibleby:"4" %}
+</div><div class="row pages-line unstyled">
+    {% endif %}
+    {% endfor %}
+</div>
 {% endif %}
 {% endblock content %}
 {% block js %}
 <script>
-$('#edit-btn').click(function() {
-    $('#edit-alert').slideToggle();
-    return false;
-});
+    $('#edit-btn').click(function() {
+        $('#edit-alert').slideToggle();
+        return false;
+    });
 $('#remove-btn').click(function() {
     $('#remove-alert').slideToggle();
     return false;
