@@ -12,4 +12,5 @@ class AddForm(forms.Form):
     description = forms.CharField(label="Description", max_length=250)
     sourcelink = forms.URLField(label="Site source", max_length=512, required=False)
     languages = forms.MultipleChoiceField(label="Languages", required=False, choices=make_choices)
-    tos = forms.BooleanField(label="Accept TOS")
+    tos = forms.BooleanField(label="Accept TOS", required=True)
+    ack_publishing = forms.BooleanField(label="Accept publishing", required=True)

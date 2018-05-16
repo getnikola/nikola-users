@@ -16,8 +16,7 @@
         <div class="col-lg-10">
             <input type="text" class="form-control" name="author" id="inputAuthor" placeholder="Author"
             required maxlength="100">
-            <span class="help-block">Pseudonym, real name, what floats your
-                boat.</span>
+            <span class="help-block">Don’t use an e-mail; feel free to use a pseudonym.</span>
         </div>
     </div>
     <div class="form-group form-row">
@@ -54,7 +53,7 @@
             </select>
             <span class="help-block">Languages your site is in.  (choose at
                 least one — use <strong>Ctrl</strong>/<strong>Cmd</strong> to choose multiple)</span>
-            <p class="text-warning">If your language is not on the list,
+            <p class="text-warning mb-0">If your language is not on the list,
             please <a
                 href="https://github.com/getnikola/nikola-users/issues">report
                 an Issue on GitHub</a>.</p>
@@ -62,9 +61,11 @@
     </div>
     <div class="form-group form-row">
         <div class="offset-lg-2 col-lg-10">
-            <label class="checkbox">
-                <input name="tos" type="checkbox" required> I agree to the <a href="/tos/">Terms of Service and Privacy Policy</a>.
-            </label><br>
+            <label class="checkbox mb-3">
+                <input name="tos" type="checkbox" required> I agree to the <a href="/tos/">Terms of Service and Privacy Policy</a>.</label>
+            <label class="checkbox mb-3">
+                <input name="ack_publishing" type="checkbox" required> I also acknowledge that all the information I submit will be displayed publicly. You may revise or remove all information at any time by e-mailing the site administrators.
+            </label>
             <button type="submit" class="btn btn-primary">Request addition</button>
         </div>
     </div>

@@ -131,8 +131,8 @@ def add(request):
             return render(request, 'add-ack.html', context)
         else:
             context['reason'] = form.errors
-            if 'tos' in form.errors:
-                context['reason'] = 'tos'
+            if 'tos' in form.errors or 'ack_publishing' in form.errors:
+                context['reason'] = 'You need to accept the TOS and acknowledge data publication.'
             return render(request, 'add-error.html', context)
     else:
         context['langs'] = Language.objects.order_by('name')
