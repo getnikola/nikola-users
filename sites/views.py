@@ -1,8 +1,11 @@
 import itertools
+
 from django.shortcuts import render
 from django.core.mail import send_mail
 from django.utils.html import format_html
-from django.http import JsonResponse, HttpResponseNotFound
+from django.http import JsonResponse, HttpResponse, HttpResponseNotFound
+from django.contrib.auth.decorators import login_required
+
 from .models import Site, Language
 from .forms import AddForm
 
@@ -14,6 +17,7 @@ MENU = (
     ('/remove/', 'Remove', 'remove'),
     ('/check/', 'Check sites', 'check'),
     ('/tos/', 'Terms of Service', 'tos'),
+    ('/downloads/', 'Downloads', 'downloads'),
 )
 
 
@@ -42,14 +46,14 @@ def index(request):
 
 
 def lang(request, **filters):
-    l = Language.objects.filter(**filters)
-    if not l:
+    lang = Language.objects.filter(**filters)
+    if not lang:
         return HttpResponseNotFound()
-    elif len(l) == 1:
-        lnames = str(l[0])
-        objects = l[0].site_set
+    elif len(lang) == 1:
+        lnames = str(lang[0])
+        objects = lang[0].site_set
     else:
-        lnames = ', '.join(str(_) for _ in l)
+        lnames = ', '.join(str(_) for _ in lang)
         objects = Site.objects.filter(languages__language_code=filters['language_code'])
     return generic_index(request, title="{{0}} Sites in {0}".format(lnames), page='lang', objects=objects)
 
@@ -184,3 +188,64 @@ def tos(request):
     }
 
     return render(request, 'tos.html', context)
+
+
+def downloads(request):
+    """Downloads page."""
+    all_count = Site.objects.count()
+    featured_count = Site.objects.filter(featured=True).count()
+    context = {
+        'menu': MENU,
+        'title': 'Downloads',
+        'page': 'downloads',
+        'all_count': all_count,
+        'featured_count': featured_count
+    }
+
+    return render(request, 'downloads.html', context)
+
+
+def download_urls_txt(request):
+    """Download URLs in text format."""
+    urls = [s.url for s in Site.objects.filter(visible=True).order_by('pk')]
+    urls.append('')  # trailing newline
+
+    return HttpResponse('\n'.join(urls), content_type='text/plain')
+
+
+def download_urls_json(request):
+    """Download URLs in JSON format."""
+    urls = {s.title: s.url for s in Site.objects.filter(visible=True).order_by('pk')}
+
+    return JsonResponse(urls)
+
+
+def download_json_handler(sites):
+    data = []
+    for site in sites:
+        site_info = {
+            'title': site.title,
+            'url': site.url,
+            'author': site.author,
+            'description': site.description,
+            'sourcelink': site.sourcelink,
+            'languages': [lang.code for lang in site.languages.all()],
+            'featured': site.featured
+        }
+        if site.featured:
+            site_info['featured_order'] = site.featured_order
+            site_info['featured_reason'] = site.featured_reason
+        data.append(site_info)
+
+    return JsonResponse(data, safe=False)
+
+
+def download_featured_json(request):
+    sites = Site.objects.filter(featured=True, visible=True).order_by('featured_order')
+    return download_json_handler(sites)
+
+
+@login_required
+def download_sites_json(request):
+    sites = Site.objects.filter(visible=True).order_by('pk')
+    return download_json_handler(sites)

@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from . import views
 
+app_name = 'sites'
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^add/?$', views.add, name='add'),
@@ -12,4 +13,9 @@ urlpatterns = [
     url(r'^lang/?$', views.langlist, name='langlist'),
     url(r'^lang/(?P<language_code>[a-z]{2,5})/?$', views.lang, name='lang'),
     url(r'^lang/(?P<language_code>[a-z]{2,5})_(?P<country_code>[A-Z]{2,5})/?$', views.lang, name='lang'),
+    url(r'^download/?$', views.download, name='download'),
+    url(r'^download/urls.txt$', views.download_urls_txt, name='download_urls_txt'),
+    url(r'^download/urls.json$', views.download_urls_json, name='download_urls_json'),
+    url(r'^download/featured.json$', views.download_featured_json, name='download_featured_json'),
+    url(r'^download/sites.json$', views.download_sites_json, name='download_sites_json'),
 ]

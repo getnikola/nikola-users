@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Downloads</h2>
+<p>We offer the ability to download the sites list in multiple formats. The information may only be used for non-commercial purposes.</p>
+<ul>
+    <li><a href="{% url "sites:download_urls_txt" %}">Only URLs, .txt format</a></li>
+    <li><a href="{% url "sites:download_urls_json" %}">URLs and titles, .json format</a></li>
+    <li><a href="{% url "sites:download_featured_json" %}">Full data on {{ featured_count }} featured sites, .json format</a></li>
+</ul>
+<p>If you want information on all {{ all_count }} sites, please contact us (state the reason): <a href="mailto:users@getnikola.com">users@getnikola.com</a>.</p>
+{% if user.is_authenticated %}
+<a href="{% url "sites:download_sites_json" %}">Download full site data</a> (logged-in users only)
+{% endif %}
+
+{% endblock %}
