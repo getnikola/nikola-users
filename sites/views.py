@@ -176,7 +176,7 @@ def check(request):
 
 def api_check(request):
     """Check API."""
-    return JsonResponse({"type": "error", "data": "This service has been disabled. Please see https://github.com/getnikola/nikola-users/blob/master/sites/checker.py for a helper script."})
+    return JsonResponse({"type": "error", "data": "This service has been disabled. Please see https://github.com/getnikola/nikola-users/blob/master/site_checker.py for a helper script."})
 
 
 def tos(request):

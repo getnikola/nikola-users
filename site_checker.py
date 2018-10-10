@@ -1,5 +1,6 @@
 import requests
 
+
 def gencheck(url):
     if not url.endswith('/rss.xml'):
         return {"type": "error", "data": "This is not a random web proxy."}
@@ -17,3 +18,7 @@ def gencheck(url):
         return {"type": "error", "data": 'HTTP Error {0}.'.format(r.status_code)}
     else:
         return {"type": "result", "data": result}
+
+
+if __name__ == '__main__':
+    print(gencheck(input("URL: "))["data"])
