@@ -22,8 +22,16 @@
     <dt>Source</dt>
     <dd>{% if site.sourcelink %}{{ site.clickable_sourcelink }}{% else %}none{% endif %}</dd>
     <dt>Languages</dt>
+    {% if blacklisted %}
+    <dd>{{ fake_languages|join:", " }}</dd>
+    {% else %}
     <dd>{{ site.languages.all|join:", " }}</dd>
+    {% endif %}
     <dt>Date</dt>
+    {% if blacklisted %}
+    <dd>{% now "Y-m-d H:i:s" %}</dd>
+    {% else %}
     <dd>{{ site.date|date:"Y-m-d H:i:s" }}</dd>
+    {% endif %}
 </dl>
 {% endblock %}

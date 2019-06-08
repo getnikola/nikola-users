@@ -5,7 +5,6 @@ from django.utils.html import format_html, mark_safe, escape
 
 
 class Language(models.Model):
-
     """A language model."""
 
     name = models.CharField("Display name", max_length=50, unique=True)
@@ -26,7 +25,6 @@ class Language(models.Model):
 
 
 class Site(models.Model):
-
     """A site model."""
 
     title = models.CharField(max_length=100)
@@ -64,3 +62,21 @@ class Site(models.Model):
     def __str__(self):
         """String representation of a site."""
         return self.title
+
+
+class BlacklistedURL(models.Model):
+    """A blacklisted URL or URL fragment."""
+    url = models.CharField("URL", max_length=512, unique=True)
+    exact = models.BooleanField("Exact match", default=False)
+
+    def __str__(self):
+        """String representation of a blacklisted URL."""
+        return self.url
+
+    def __repr__(self):
+        """Representation of a blacklisted URL."""
+        return "<{} (exact: {})>".format(self.url, self.exact)
+
+    class Meta:
+        verbose_name = "blacklisted URL"
+        verbose_name_plural = "blacklisted URLs"

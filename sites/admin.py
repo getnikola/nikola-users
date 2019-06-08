@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 from django.forms import ModelForm, ModelMultipleChoiceField
-from .models import Site, Language
+from .models import Site, Language, BlacklistedURL
 
 class SiteAdminForm(ModelForm):
     languages = ModelMultipleChoiceField(queryset=Language.objects.order_by('name'))
@@ -30,5 +30,9 @@ class SiteAdmin(admin.ModelAdmin):
 
     actions = [make_visible, make_invisible]
 
+class BlacklistedURLAdmin(admin.ModelAdmin):
+    list_display = ('url', 'exact')
+
 admin.site.register(Site, SiteAdmin)
 admin.site.register(Language, LanguageAdmin)
+admin.site.register(BlacklistedURL, BlacklistedURLAdmin)

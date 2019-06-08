@@ -6,7 +6,7 @@ from django.utils.html import format_html
 from django.http import JsonResponse, HttpResponse, HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 
-from .models import Site, Language
+from .models import Site, Language, BlacklistedURL
 from .forms import AddForm
 
 MENU = (
@@ -107,6 +107,33 @@ def add(request):
             site.author = form.cleaned_data['author']
             site.description = form.cleaned_data['description']
             site.sourcelink = form.cleaned_data['sourcelink']
+
+            # Blacklisting
+            blacklisted = False
+            for bl in BlacklistedURL.objects.all():
+                if (bl.exact and site.url == bl.url) or (not bl.exact and bl.url in site.url):
+                    blacklisted = True
+                    break
+
+            if blacklisted:
+                fake_languages = []
+                for lang in form.cleaned_data['languages']:
+                    try:
+                        if '_' in lang:
+                            lcode, ccode = lang.split('_')
+                            fake_languages.append(Language.objects.get(language_code=lcode, country_code=ccode))
+                        else:
+                            fake_languages.append(Language.objects.get(language_code=lang))
+                    except Language.DoesNotExist:
+                        context['reason'] = 'Language does not exist.'
+                        return render(request, 'add-error.html', context)
+
+                context['site'] = site
+                context['blacklisted'] = True
+                context['fake_languages'] = fake_languages
+                context['email_succeeded'] = True
+                return render(request, 'add-ack.html', context)
+
             site.save()
             for lang in form.cleaned_data['languages']:
                 try:
@@ -116,8 +143,12 @@ def add(request):
                     else:
                         site.languages.add(Language.objects.get(language_code=lang))
                 except Language.DoesNotExist:
+                    site.delete()
                     context['reason'] = 'Language does not exist.'
                     return render(request, 'add-error.html', context)
+
+
+
             site.save()
             context['site'] = site
 
