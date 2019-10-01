@@ -7,4 +7,4 @@ cd /srv/users.getnikola.com/appdata
 git pull origin master
 ./manage.py migrate
 ./manage.py collectstatic --noinput
-sudo systemctl restart uwsgi
+sudo touch /etc/uwsgi.d/users.getnikola.com.ini
