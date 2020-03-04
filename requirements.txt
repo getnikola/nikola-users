@@ -5,8 +5,8 @@
 #    pip-compile
 #
 asgiref==3.2.3            # via django
-django==3.0.3
+django==3.0.4
 psycopg2==2.8.4
 pytz==2019.3              # via django
-sqlparse==0.3.0           # via django
+sqlparse==0.3.1           # via django
 uwsgi==2.0.18

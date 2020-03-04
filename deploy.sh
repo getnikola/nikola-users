@@ -1,6 +1,6 @@
 #!/usr/bin/zsh
 cd "${0%/*}"
-source /srv/users.getnikola.com/bin/activate
+source /srv/users.getnikola.com/venv/bin/activate
 source local-config
 cd /home/kwpolska/git/nikola-users
 git pull origin master
