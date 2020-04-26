@@ -108,6 +108,10 @@ def add(request):
             site.description = form.cleaned_data['description']
             site.sourcelink = form.cleaned_data['sourcelink']
 
+            if not form.cleaned_data['languages']:
+                context['reason'] = 'No language specified.'
+                return render(request, 'add-error.html', context)
+
             # Blacklisting
             blacklisted = False
             for bl in BlacklistedURL.objects.all():

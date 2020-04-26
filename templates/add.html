@@ -46,7 +46,7 @@
     <div class="form-group form-row">
         <label class="control-label col-lg-2" for="selectLanguages">Languages</label>
         <div class="col-lg-10">
-            <select multiple name="languages" id="selectLanguages" class="form-control">
+            <select multiple required name="languages" id="selectLanguages" class="form-control">
                 {% for l in langs %}
                 <option value="{{ l.code }}">{{ l }}</option>
                 {% endfor %}
