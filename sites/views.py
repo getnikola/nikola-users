@@ -162,7 +162,7 @@ def add(request):
                     '{0} has requested addition of "{1}" <{2}> to the Nikola Users site.\n'
                     'Please visit the admin panel to accept or reject it: https://users.getnikola.com/admin/'.format(
                         site.author, site.title, site.url),
-                    'nikola-users@chriswarrick.com', ['nikola-users@chriswarrick.com'], fail_silently=False)
+                    'nikola-users@chriswarrick.com', ['users@getnikola.com'], fail_silently=False)
                 context['email_succeeded'] = True
             except Exception:
                 context['email_succeeded'] = False
