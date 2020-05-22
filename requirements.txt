@@ -4,9 +4,9 @@
 #
 #    pip-compile
 #
-asgiref==3.2.3            # via django
-django==3.0.4
-psycopg2==2.8.4
-pytz==2019.3              # via django
+asgiref==3.2.7            # via django
+django==3.0.6             # via -r requirements.in
+psycopg2==2.8.5           # via -r requirements.in
+pytz==2020.1              # via django
 sqlparse==0.3.1           # via django
-uwsgi==2.0.18
+uwsgi==2.0.18             # via -r requirements.in
