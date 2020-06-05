@@ -5,7 +5,7 @@
 #    pip-compile
 #
 asgiref==3.2.7            # via django
-django==3.0.6             # via -r requirements.in
+django==3.0.7             # via -r requirements.in
 psycopg2==2.8.5           # via -r requirements.in
 pytz==2020.1              # via django
 sqlparse==0.3.1           # via django
