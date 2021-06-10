@@ -4,9 +4,9 @@
 #
 #    pip-compile
 #
-asgiref==3.3.2
+asgiref==3.3.4
     # via django
-django==3.2
+django==3.2.4
     # via -r requirements.in
 psycopg2==2.8.6
     # via -r requirements.in
