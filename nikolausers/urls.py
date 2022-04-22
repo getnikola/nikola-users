@@ -13,12 +13,12 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import include, url
+from django.urls import include, re_path
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^', include('sites.urls')),
-    url(r'^admin/', admin.site.urls),
+    re_path(r'^', include('sites.urls')),
+    re_path(r'^admin/', admin.site.urls),
 ]
 
 admin.site.site_title = admin.site.site_header = admin.site.index_title = 'Nikola Users — Administration'
