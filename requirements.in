@@ -1,3 +1,5 @@
 Django
 psycopg2
-uWSGI
+uvicorn
+uvicorn-worker
+gunicorn
