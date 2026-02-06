@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 statefile=/tmp/migrated
 if [ ! -f "$statefile" ]; then
     /venv/bin/python manage.py collectstatic --noinput
