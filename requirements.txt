@@ -6,11 +6,11 @@
 #
 asgiref==3.11.1
     # via django
-click==8.3.1
+click==8.3.2
     # via uvicorn
-django==6.0.3
+django==6.0.4
     # via -r requirements.in
-gunicorn==25.1.0
+gunicorn==25.3.0
     # via
     #   -r requirements.in
     #   uvicorn-worker
@@ -22,7 +22,7 @@ psycopg2==2.9.11
     # via -r requirements.in
 sqlparse==0.5.5
     # via django
-uvicorn==0.41.0
+uvicorn==0.44.0
     # via
     #   -r requirements.in
     #   uvicorn-worker
